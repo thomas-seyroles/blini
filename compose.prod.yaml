@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bluni
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      POSTGRES_DB: bluni
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bluni"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      network: host
+      args:
+        DATABASE_URL: postgres://bluni:${POSTGRES_PASSWORD}@127.0.0.1:5433/bluni
+        SESSION_SECRET: ${SESSION_SECRET:?}
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgres://bluni:${POSTGRES_PASSWORD}@db:5432/bluni
+      SESSION_SECRET: ${SESSION_SECRET:?}
+    ports:
+      - "127.0.0.1:3000:3000"
+
+  # Outils : docker compose --profile tools run --rm tools pnpm db:migrate
+  tools:
+    profiles: ["tools"]
+    build: { context: ., target: deps }
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgres://bluni:${POSTGRES_PASSWORD}@db:5432/bluni
+      SESSION_SECRET: ${SESSION_SECRET:?}
+
+volumes:
+  db:
