@@ -16,6 +16,7 @@ services:
       retries: 10
 
   app:
+    image: bluni-app
     build:
       context: .
       network: host
