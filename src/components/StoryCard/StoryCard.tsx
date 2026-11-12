@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
 import { useApp } from "@/components/AppState/AppState";
-import { regionBySlug, type Story } from "@/lib/stories";
+import type { Story } from "@/lib/stories";
 import styles from "./StoryCard.module.css";
 
 export default function StoryCard({ story }: { story: Story }) {
-    const { update } = useApp();
-    const region = regionBySlug(story.regionSlug);
+    const { play, catalog } = useApp();
+    const region = catalog.regionBySlug(story.regionSlug);
     return (
         <li className={styles.root}>
             <div className={styles.cover}>
@@ -20,7 +20,7 @@ export default function StoryCard({ story }: { story: Story }) {
                     transitionTypes={["nav-forward"]}
                     className={styles.play}
                     aria-label={`Écouter ${story.title}`}
-                    onClick={() => update((s) => ({ ...s, nowPlaying: story.id }))}
+                    onClick={() => play(story.id)}
                 >
                     <Play size={18} fill="currentColor" />
                 </Link>

@@ -13,9 +13,7 @@ export default function RegionTile({ region, count, cover, href }: RegionTilePro
     return (
         <li className={styles.root}>
             <Link href={href} transitionTypes={["nav-forward"]} className={styles.link}>
-                {cover
-                    ? <Image className={styles.visual} src={cover} alt="" width={140} height={198} sizes="140px" />
-                    : <span className={styles.visual} />}
+                <Image className={styles.visual} src={cover ?? "/images/items/collection.webp"} alt="" width={280} height={396} sizes="140px" />
                 <span className={styles.region}>{region}</span>
                 <span className={styles.count}>{count}</span>
             </Link>

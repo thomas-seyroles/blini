@@ -21,12 +21,12 @@ export default async function Home() {
       <header className={styles.header}>
         <Greeting className={styles.greeting} />
         <h1 className={styles.title}>on se PRÉVOIT<br />UN BLUNI ?</h1>
-        <Image className={styles.mascotCar} src="/images/mascotte-voiture.png" alt="" width={122} height={130} priority />
+        <Image className={styles.mascotCar} src="/images/mascottes/voiture.webp" alt="" width={122} height={130} priority />
       </header>
       <TripPlanner />
-      <Image className={styles.mascotFrance} src="/images/mascotte-france.png" alt="" width={149} height={183} />
+      <Image className={styles.mascotFrance} src="/images/mascottes/france.webp" alt="" width={149} height={183} />
       <section className={styles.section}>
-        <SectionTitle title="Régions traversées" link={{ label: "Voir tout →", href: "/histoires/boutique" }} />
+        <SectionTitle title="Régions à traversées" link={{ label: "Voir tout →", href: "/histoires/boutique" }} />
         <RegionCarousel regions={carousel} />
       </section>
       <section className={styles.section}>

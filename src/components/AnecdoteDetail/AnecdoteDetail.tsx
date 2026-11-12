@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Gift, MapPin, Pencil, Trash2 } from "lucide-react";
 import { detailSteps, minSec } from "@/lib/anecdotes";
+import { deleteAnecdote, updateAnecdoteDetails } from "@/server/actions/anecdotes";
 import { useApp } from "../AppState/AppState";
 import AudioPlayerMini from "../AudioPlayerMini/AudioPlayerMini";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
@@ -19,13 +20,13 @@ import styles from "./AnecdoteDetail.module.css";
 
 export default function AnecdoteDetail({ id }: { id: string }) {
     const router = useRouter();
-    const { state, hydrated, updateAnecdote, deleteAnecdote } = useApp();
+    const { state } = useApp();
     const [editing, setEditing] = useState(false);
     const [confirming, setConfirming] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const a = state.anecdotes.find((x) => x.id === id);
 
-    if (!hydrated || deleted) return <FlowPage><FlowHeader title="Mon anecdote" backHref="/raconter" /></FlowPage>;
+    if (deleted) return <FlowPage><FlowHeader title="Mon anecdote" backHref="/raconter" /></FlowPage>;
 
     if (!a) {
         return (
@@ -43,7 +44,7 @@ export default function AnecdoteDetail({ id }: { id: string }) {
             <div className={styles.cover}>
                 {a.photoUrl
                     ? <Image src={a.photoUrl} alt={`Photo de ${a.title}`} fill unoptimized sizes="390px" />
-                    : <Image className={styles.fallback} src="/images/raconter/mascotte-livres.png" alt="" width={110} height={110} />}
+                    : <Image className={styles.fallback} src="/images/mascottes/livres.webp" alt="" width={110} height={110} />}
             </div>
 
             <div className={styles.intro}>
@@ -52,7 +53,7 @@ export default function AnecdoteDetail({ id }: { id: string }) {
                 {a.details && <p className={styles.details}>{a.details}</p>}
             </div>
 
-            <AudioPlayerMini durationSec={a.audioSec} label={`Écouter, durée ${minSec(a.audioSec)}`} />
+            <AudioPlayerMini durationSec={a.audioSec} src={a.audioUrl} label={`Écouter, durée ${minSec(a.audioSec)}`} />
 
             <section className={`${flow.box} ${flow.boxYellow} ${styles.status}`}>
                 <h3 className={styles.statusTitle}>Où en est ton anecdote</h3>
@@ -72,7 +73,7 @@ export default function AnecdoteDetail({ id }: { id: string }) {
             {editing ? (
                 <DetailsEditor
                     initial={a.details}
-                    onSave={(details) => { updateAnecdote(a.id, { details }); setEditing(false); }}
+                    onSave={(details) => { updateAnecdoteDetails(a.id, details); setEditing(false); }}
                     onCancel={() => setEditing(false)}
                 />
             ) : (

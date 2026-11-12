@@ -1,0 +1,46 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--rayon);
+    color: var(--texte);
+}
+
+.root > svg {
+    flex-shrink: 0;
+    color: var(--violet);
+}
+
+.open {
+    border: 2px solid var(--jaune);
+    background: var(--jaune-doux);
+}
+
+.locked {
+    background: var(--fond-secondaire);
+}
+
+.texts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.texts strong {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.texts small {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.progress {
+    width: 100%;
+    height: 6px;
+    accent-color: var(--violet);
+}

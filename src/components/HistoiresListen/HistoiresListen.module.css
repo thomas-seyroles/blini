@@ -1,0 +1,46 @@
+.next {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    text-align: left;
+    background: var(--fond);
+}
+
+.cover {
+    flex-shrink: 0;
+    width: 64px;
+    aspect-ratio: 565 / 800;
+    border-radius: 8px;
+    font-size: 24px;
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 19px;
+}
+
+.infos {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--texte-secondaire);
+}

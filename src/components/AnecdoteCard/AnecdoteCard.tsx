@@ -5,16 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pause, Pencil, Play, Trash2 } from "lucide-react";
 import { clock, regionOf, type Anecdote } from "@/lib/anecdotes";
-import { useApp } from "../AppState/AppState";
-import { useSimulatedPlayer } from "../AudioPlayerMini/useSimulatedPlayer";
+import { deleteAnecdote, updateAnecdoteDetails } from "@/server/actions/anecdotes";
+import { usePlayer } from "../AudioPlayerMini/usePlayer";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import DetailsEditor from "../DetailsEditor/DetailsEditor";
 import StatusSteps from "../StatusSteps/StatusSteps";
 import styles from "./AnecdoteCard.module.css";
 
 export default function AnecdoteCard({ anecdote: a }: { anecdote: Anecdote }) {
-    const { updateAnecdote, deleteAnecdote } = useApp();
-    const player = useSimulatedPlayer(a.audioSec);
+    const player = usePlayer(a.audioSec, a.audioUrl);
     const [editing, setEditing] = useState(false);
     const [confirming, setConfirming] = useState(false);
 
@@ -25,10 +24,12 @@ export default function AnecdoteCard({ anecdote: a }: { anecdote: Anecdote }) {
                     <Link href={`/raconter/anecdotes/${a.id}`} transitionTypes={["nav-forward"]} className={styles.title}>{a.title}</Link>
                     <p className={styles.sub}>{regionOf(a.place)} · audio {clock(a.audioSec).replace(/^0/, "")}{a.hasPhoto && " + photo"}</p>
                 </div>
-                <span className={styles.points}>
-                    +{a.points} pts
-                    <Image src="/images/icone-points.svg" alt="" width={15} height={15} />
-                </span>
+                {a.points > 0 && (
+                    <span className={styles.points}>
+                        +{a.points} pts
+                        <Image src="/images/icones/points.svg" alt="" width={15} height={15} />
+                    </span>
+                )}
             </div>
 
             {a.validated === false && <p className={styles.waiting}>À valider en fin de trajet</p>}
@@ -44,7 +45,7 @@ export default function AnecdoteCard({ anecdote: a }: { anecdote: Anecdote }) {
             {editing ? (
                 <DetailsEditor
                     initial={a.details}
-                    onSave={(details) => { updateAnecdote(a.id, { details }); setEditing(false); }}
+                    onSave={(details) => { updateAnecdoteDetails(a.id, details); setEditing(false); }}
                     onCancel={() => setEditing(false)}
                 />
             ) : (

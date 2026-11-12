@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
-import { shrinkPhoto, type Anecdote, type DetailStep } from "@/lib/anecdotes";
+import type { DetailStep } from "@/lib/anecdotes";
 import { useApp } from "../AppState/AppState";
 import Button from "../Button/Button";
 import FlowPage from "../FlowPage/FlowPage";
@@ -22,40 +22,13 @@ const steps: DetailStep[] = [
 
 export default function RaconterConfirmation() {
     const router = useRouter();
-    const { state, addAnecdote } = useApp();
-    const { draft, clear, created, setCreated } = useRaconter();
-    const started = useRef(false);
+    const { state } = useApp();
+    const { clear, created } = useRaconter();
 
-    const valid = draft.durationSec >= 3 && !!draft.title.trim() && !!draft.place.trim();
-
-    // Création unique de l'anecdote, puis brouillon vidé
+    // Anecdote envoyée depuis le récapitulatif : on vide le brouillon. Accès direct : retour à Raconter.
     useEffect(() => {
-        if (started.current || created) return;
-        if (!valid) {
-            router.replace("/raconter");
-            return;
-        }
-        started.current = true;
-        (async () => {
-            const photoUrl = draft.photo ? await shrinkPhoto(draft.photo) : undefined;
-            const anecdote: Anecdote = {
-                id: `an-${Date.now().toString(36)}`,
-                title: draft.title.trim(),
-                place: draft.place.trim(),
-                audioSec: draft.durationSec,
-                hasPhoto: !!photoUrl,
-                photoUrl,
-                details: draft.details.trim(),
-                status: 0,
-                points: photoUrl ? 30 : 20,
-                sentAt: "Aujourd’hui",
-                validated: false,
-                tripLabel: "Trajet en cours",
-            };
-            addAnecdote(anecdote);
-            setCreated({ id: anecdote.id, title: anecdote.title });
-            clear();
-        })();
+        if (created) clear();
+        else router.replace("/raconter");
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!created) return null;
@@ -69,11 +42,9 @@ export default function RaconterConfirmation() {
             </div>
 
             <div className={styles.illustration}>
-                <Image className={styles.halo} src="/images/confirmation/halo.svg" alt="" width={170} height={170} />
-                <Image className={styles.mascot} src="/images/mascotte-france.png" alt="" width={110} height={135} priority />
+                <Image className={styles.halo} src="/images/decors/halo.svg" alt="" width={170} height={170} />
+                <Image className={styles.mascot} src="/images/mascottes/france.webp" alt="" width={110} height={135} priority />
             </div>
-
-            <p className={styles.points}>+50 pts</p>
 
             <div className={styles.title}>
                 <h1 className={styles.heading}>Merci {state.profile.firstName} !</h1>

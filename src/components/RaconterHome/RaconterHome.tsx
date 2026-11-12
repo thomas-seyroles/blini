@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { useApp } from "../AppState/AppState";
 import AnecdoteCard from "../AnecdoteCard/AnecdoteCard";
+import PackageCta from "../PackageCta/PackageCta";
 import EmptyState from "../EmptyState/EmptyState";
 import TabHeader from "../TabHeader/TabHeader";
 import styles from "./RaconterHome.module.css";
@@ -32,7 +33,7 @@ export default function RaconterHome() {
             <div className={styles.header}>
                 <TabHeader title="racontes nous tout !" />
             </div>
-            <Image className={styles.mascot} src="/images/raconter/mascotte-livres.png" alt="" width={135} height={135} priority />
+            <Image className={styles.mascot} src="/images/mascottes/livres.webp" alt="" width={135} height={135} priority />
 
             {waiting > 0 && (
                 <Link href="/raconter/validation" transitionTypes={["nav-forward"]} className={styles.banner}>
@@ -43,6 +44,8 @@ export default function RaconterHome() {
                     <ChevronRight size={20} />
                 </Link>
             )}
+
+            <PackageCta variant="banner" />
 
             <section className={styles.list}>
                 <div className={styles.titleRow}>

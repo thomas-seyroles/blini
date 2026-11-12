@@ -1,40 +1,26 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Sparkle from "@/components/Sparkle/Sparkle";
 import Link from "next/link";
 import { Bell, BookOpen, Mic, X } from "lucide-react";
-import { dayLine, driverById, placesFor } from "@/lib/journeys";
-import { POINTS_USED, quote } from "@/lib/quote";
-import { bookedFromJourney } from "@/lib/trips";
-import { useApp } from "../AppState/AppState";
+import { dayLine } from "@/lib/journeys";
+import { quote } from "@/lib/quote";
 import Button from "../Button/Button";
 import FlowPage from "../FlowPage/FlowPage";
 import flow from "../FlowPage/FlowPage.module.css";
 import { useReservation, useReservationGuard } from "../ReservationProvider/ReservationProvider";
 import styles from "./ConfirmationStep.module.css";
 
-const dir = "/images/confirmation";
+const dir = "/images/decors";
 
 export default function ConfirmationStep() {
     useReservationGuard();
     const { booking } = useReservation();
-    const { hydrated, addTrip, spendPoints } = useApp();
     const q = quote(booking);
-    const saved = useRef(false);
-
-    // Enregistre les trajets réservés une seule fois, une fois le store restauré
-    useEffect(() => {
-        if (!hydrated || !q.aller || saved.current) return;
-        saved.current = true;
-        const stamp = Date.now().toString(36);
-        q.journeys.forEach((j) => addTrip(bookedFromJourney(j, placesFor(j, booking.passengers), stamp)));
-        if (booking.usePoints) spendPoints(POINTS_USED);
-    });
-
     if (!q.aller) return null;
 
-    const driver = driverById(q.aller.driverId);
+    const { driver } = q.aller;
     const next = [
         { icon: Bell, text: `${driver.name} confirme ta place sous 24 h` },
         ...(booking.pack ? [{ icon: BookOpen, text: "Ton pack de 3 histoires est prêt à écouter" }] : []),
@@ -51,11 +37,11 @@ export default function ConfirmationStep() {
 
             <div className={styles.illustration}>
                 <Image className={styles.halo} src={`${dir}/halo.svg`} alt="" width={170} height={170} />
-                <Image className={styles.mascot} src="/images/mascotte-casque.png" alt="" width={137} height={150} priority />
-                <Image className={`${styles.spark} ${styles.sparkA}`} src={`${dir}/etincelle-jaune-grande.svg`} alt="" width={20} height={20} />
-                <Image className={`${styles.spark} ${styles.sparkB}`} src={`${dir}/etincelle-violette-moyenne.svg`} alt="" width={14} height={14} />
-                <Image className={`${styles.spark} ${styles.sparkC}`} src={`${dir}/etincelle-jaune-petite.svg`} alt="" width={12} height={12} />
-                <Image className={`${styles.spark} ${styles.sparkD}`} src={`${dir}/etincelle-violette-petite.svg`} alt="" width={12} height={12} />
+                <Image className={styles.mascot} src="/images/mascottes/casque.webp" alt="" width={137} height={150} priority />
+                <Sparkle className={`${styles.spark} ${styles.sparkA}`} size={20} />
+                <Sparkle className={`${styles.spark} ${styles.sparkB}`} size={14} violet />
+                <Sparkle className={`${styles.spark} ${styles.sparkC}`} size={12} />
+                <Sparkle className={`${styles.spark} ${styles.sparkD}`} size={12} violet />
             </div>
 
             <div className={styles.title}>
@@ -66,7 +52,7 @@ export default function ConfirmationStep() {
             <ul className={`${flow.box} ${styles.recap}`}>
                 {q.journeys.map((j) => (
                     <li key={j.id} className={styles.leg}>
-                        <span className={flow.tag}>{j.direction === "aller" ? "Aller" : "Retour"}</span>
+                        <span className={flow.tag}>{j === q.aller ? "Aller" : "Retour"}</span>
                         <p>{dayLine(j)}</p>
                     </li>
                 ))}

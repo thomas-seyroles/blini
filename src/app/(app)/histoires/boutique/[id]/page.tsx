@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import FlowHeader from "@/components/FlowHeader/FlowHeader";
 import FlowPage from "@/components/FlowPage/FlowPage";
 import Cover from "@/components/Cover/Cover";
+import Credits from "@/components/Credits/Credits";
 import StoryAction from "@/components/StoryAction/StoryAction";
 import StoryRow from "@/components/StoryRow/StoryRow";
-import { minutes, synopsis } from "@/lib/stories";
+import { PACK_DISCOUNT_PERCENT, STORIES_PER_REGION, STORY_PRICE_CENTS, minutes, price, synopsis } from "@/lib/stories";
 import { getCatalogIndex } from "@/server/queries/catalog";
 import styles from "../../page.module.css";
 
@@ -25,16 +26,19 @@ export default async function StoryDetail({ params }: { params: Promise<{ id: st
   return (
     <FlowPage>
       <FlowHeader title={pack ? "Pack région" : "Histoire"} backHref="/histoires/boutique" />
-      <Cover regionSlug={item.regionSlug} className={styles.hero} sizes="390px" />
-      <h2 className={styles.title}>{item.title}</h2>
+      <Cover regionSlug={item.regionSlug} className={pack ? styles.heroFull : styles.hero} sizes="390px" />
+      <div className={styles.head}>
+        <h2 className={styles.title}>{item.title}</h2>
+        {story && <Credits storyId={story.id} />}
+      </div>
       <p className={styles.meta}>
         {pack
-          ? `${pack.storyIds.length} histoires · ${minutes(total)} d’écoute · badge région inclus`
+          ? `${pack.storyIds.length} histoires disponibles · ${minutes(total)} d’écoute · badge région inclus`
           : `${story!.author} · ${story!.age} · ${minutes(total)}`}
       </p>
       <p className={styles.text}>
         {pack
-          ? `Toutes les histoires de ${regionName(pack.regionSlug)} en un seul achat, plus le badge de la région pour ta collection.`
+          ? `La collection complète de ${regionName(pack.regionSlug)} : ${STORIES_PER_REGION} histoires, les ${pack.storyIds.length} déjà disponibles et celles qui seront ajoutées au fil du temps. ${STORIES_PER_REGION} × ${price(STORY_PRICE_CENTS / 100)} moins ${PACK_DISCOUNT_PERCENT} % pour l’achat global, plus le badge de la région pour ta collection.`
           : synopsis(story!, regionName(story!.regionSlug))}
       </p>
       <StoryAction kind={pack ? "pack" : "story"} id={id} large />

@@ -1,14 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useCatalog } from "../AppState/AppState";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { applyFilters, availableCount, defaultFilters } from "@/lib/filters";
-import { cityName, journeysOn } from "@/lib/journeys";
+import { cityName } from "@/lib/journeys";
+import { useBack } from "@/lib/navHistory";
 import type { Criteria } from "@/lib/search";
-import { regionName, regionsOfRoute } from "@/lib/stories";
 import { dayInfo, guestsSummary, shiftIso } from "@/lib/trip";
+import { useJourneys } from "@/lib/useJourneys";
 import { useSearch } from "@/lib/useSearch";
 import Button from "../Button/Button";
 import DayTabs from "../DayTabs/DayTabs";
@@ -17,15 +19,15 @@ import FilterSheet from "../FilterSheet/FilterSheet";
 import ResultCard from "../ResultCard/ResultCard";
 import styles from "./TripResults.module.css";
 
-const dir = "/images/resultats";
 const DAYS = 7;
 const SELECTED = 2;
 
 const listFr = (items: string[]) => (items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} et ${items[items.length - 1]}`);
 
 function Back() {
+    const goBack = useBack("/");
     return (
-        <Link href="/" transitionTypes={["nav-back"]} className={styles.back} aria-label="Retour">
+        <Link href="/" onClick={goBack} className={styles.back} aria-label="Retour">
             <ArrowLeft size={20} />
         </Link>
     );
@@ -40,10 +42,11 @@ function Results({ criteria }: { criteria: Criteria }) {
     const date = dates[offset];
     const day = dayInfo(date);
 
-    const base = useMemo(() => journeysOn(from, to, date), [from, to, date]);
+    const { regionName } = useCatalog();
+    const { journeys: base, regions: slugs, loading } = useJourneys(from, to, date);
     const list = applyFilters(base, filters);
     const count = availableCount(list);
-    const regions = regionsOfRoute(from, to).map(regionName);
+    const regions = slugs.map(regionName);
     const info = [
         `${day.short} ${day.date}`,
         criteria.retour && `retour ${dayInfo(criteria.retour).short} ${dayInfo(criteria.retour).date}`,
@@ -54,7 +57,7 @@ function Results({ criteria }: { criteria: Criteria }) {
         <li key="stories">
             <Link href="/histoires" transitionTypes={["nav-forward"]} className={styles.stories}>
                 <span className={styles.mascot}>
-                    <Image src={`${dir}/mascotte.png`} alt="" width={2480} height={3508} />
+                    <Image src={`/images/mascottes/resultats.webp`} alt="" width={2480} height={3508} />
                 </span>
                 <span className={styles.storiesTexts}>
                     <span className={styles.storiesTitle}>{regions.length} histoire{regions.length > 1 ? "s" : ""} sur ta route</span>
@@ -84,11 +87,11 @@ function Results({ criteria }: { criteria: Criteria }) {
 
             <section className={styles.results}>
                 <div className={styles.summary}>
-                    <p className={styles.count} aria-live="polite">{count} trajet{count > 1 ? "s" : ""} disponible{count > 1 ? "s" : ""}</p>
+                    <p className={styles.count} aria-live="polite">{loading ? "Recherche des trajets…" : `${count} trajet${count > 1 ? "s" : ""} disponible${count > 1 ? "s" : ""}`}</p>
                     <FilterSheet filters={filters} onChange={setFilters} count={count} />
                 </div>
 
-                {base.length === 0 && (
+                {!loading && base.length === 0 && (
                     <EmptyState
                         title="Aucun trajet ce jour"
                         text={`Aucun trajet ${from} → ${to} le ${day.weekday} ${day.date} Essaie un autre jour dans les onglets, ou modifie ta recherche.`}
@@ -105,17 +108,19 @@ function Results({ criteria }: { criteria: Criteria }) {
 
                 {list.length > 0 && (
                     <>
+                        {list.some((j) => j.kind === "certifie") && (
                         <div className={styles.legend}>
-                            <Image className={styles.legendLogo} src="/images/logo-bluni-simple.png" alt="" width={23} height={26} />
+                            <Image className={styles.legendLogo} src="/images/logos/bluni-simple.webp" alt="" width={23} height={26} />
                             <div>
                                 <p className={styles.legendTitle}>Les trajets en violet sont certifiés Bluni</p>
                                 <p className={styles.legendText}>Profils vérifiés, règlement accepté, casque Lunii à bord.</p>
                             </div>
                         </div>
+                        )}
                         <ul className={styles.list}>
-                            {list.slice(0, 2).map((j) => <ResultCard key={j.id} journey={j} href={`/reservation/trajet/${j.id}`} />)}
+                            {list.slice(0, 3).map((j) => <ResultCard key={j.id} journey={j} href={`/reservation/trajet/${j.id}`} />)}
                             {stories}
-                            {list.slice(2).map((j) => <ResultCard key={j.id} journey={j} href={`/reservation/trajet/${j.id}`} />)}
+                            {list.slice(3).map((j) => <ResultCard key={j.id} journey={j} href={`/reservation/trajet/${j.id}`} />)}
                         </ul>
                     </>
                 )}

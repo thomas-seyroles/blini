@@ -20,7 +20,7 @@ export default async function RegionPage({ params }: { params: Promise<{ slug: s
   return (
     <FlowPage>
       <FlowHeader title={region.name} backHref="/histoires/boutique" />
-      <Cover regionSlug={slug} className={styles.hero} sizes="390px" />
+      <Cover regionSlug={slug} className={styles.heroFull} sizes="390px" />
       <p className={styles.meta}>{list.length} histoires nées d’anecdotes de voyageurs</p>
       {pack && (
         <ul className={styles.list}>

@@ -1,9 +1,10 @@
-import { driverById, durationMin, type Journey } from "./journeys";
+import { durationMin, type Journey } from "./journeys";
 
 export const PRICE_MIN = 10;
 export const PRICE_MAX = 40;
 
 export const sorts = [
+    { id: "bluni", label: "Trajets Bluni en priorité" },
     { id: "depart", label: "Heure de départ" },
     { id: "prix", label: "Prix le plus bas" },
     { id: "duree", label: "Trajet le plus court" },
@@ -16,7 +17,7 @@ export const slots = [
     { id: "apres18", label: "Après 18 h", test: (h: number) => h >= 18 },
 ] as const;
 
-export type OptionId = "certifies" | "casque" | "siege";
+export type OptionId = "certifies" | "casque";
 
 export type Filters = {
     sort: (typeof sorts)[number]["id"];
@@ -26,10 +27,10 @@ export type Filters = {
 };
 
 export const defaultFilters: Filters = {
-    sort: "depart",
+    sort: "bluni",
     slot: null,
     price: PRICE_MAX,
-    on: { certifies: false, casque: false, siege: false },
+    on: { certifies: false, casque: false },
 };
 
 export const activeCount = (f: Filters) =>
@@ -40,15 +41,14 @@ export const availableCount = (list: Journey[]) => list.filter((j) => j.kind !==
 export function applyFilters(list: Journey[], f: Filters) {
     const slot = slots.find((s) => s.id === f.slot);
     const keep = (j: Journey) => {
-        const equipments = driverById(j.driverId).equipments;
+        const { equipments } = j.driver;
         return (
             (!f.on.certifies || j.kind === "certifie") &&
             (!f.on.casque || equipments.includes("headset")) &&
-            (!f.on.siege || equipments.includes("childSeat")) &&
             (!slot || slot.test(Number(j.departTime.slice(0, 2)))) &&
             j.price <= f.price
         );
     };
-    const key = { depart: (j: Journey) => j.departTime, prix: (j: Journey) => j.price, duree: durationMin }[f.sort];
+    const key = { bluni: (j: Journey) => `${j.kind === "certifie" ? 0 : 1}${j.departTime}`, depart: (j: Journey) => j.departTime, prix: (j: Journey) => j.price, duree: durationMin }[f.sort];
     return list.filter(keep).sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : a.departTime.localeCompare(b.departTime)));
 }

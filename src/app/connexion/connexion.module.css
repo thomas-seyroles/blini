@@ -1,0 +1,234 @@
+/* Page */
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 430px;
+    min-height: 100dvh;
+    margin-inline: auto;
+    padding: 46px 20px 32px;
+    background: var(--fond);
+}
+
+/* Bienvenue : tient dans 100dvh, la mascotte occupe la place restante au-dessus des actions */
+.welcomePage {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 430px;
+    height: 100dvh;
+    margin-inline: auto;
+    padding-bottom: 64px;
+    overflow: hidden;
+    background: var(--fond);
+}
+
+.visual {
+    flex: 1;
+    min-height: 0;
+    container-type: size;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 24px;
+}
+
+/* Scène 430 x 432 mise à l'échelle sur la place disponible, géométrie en pourcentages */
+.stage {
+    position: relative;
+    width: min(100cqw, 100cqh * 430 / 432);
+    aspect-ratio: 430 / 432;
+}
+
+.circle {
+    position: absolute;
+    top: 34.26%;
+    left: 50%;
+    width: 66.05%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--jaune);
+    transform: translateX(-50%);
+}
+
+/* La mascotte dépasse du rond par le haut et s'arrête sur son arrondi */
+.mascot {
+    position: absolute;
+    inset: 0;
+    mask:
+        linear-gradient(#000 0 0) top / 100% 67.13% no-repeat,
+        radial-gradient(ellipse 33.02% 32.87% at 50% 67.13%, #000 99%, transparent 100%);
+}
+
+.mascot img {
+    position: absolute;
+    top: 14.12%;
+    left: 50%;
+    width: 95.35%;
+    height: 98.61%;
+    object-fit: cover;
+    transform: translateX(-50%);
+}
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-inline: 20px;
+    text-align: center;
+}
+
+.welcomeTitle {
+    font-family: var(--font-titre);
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.welcomeText {
+    max-width: 330px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--texte-attenue);
+}
+
+.actions {
+    padding-inline: 20px;
+}
+
+/* En-tête des écrans secondaires */
+.back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--texte-attenue);
+    border-radius: 50%;
+    background: var(--fond);
+}
+
+.corner {
+    position: absolute;
+    top: 84px;
+    right: 8px;
+    width: 110px;
+    height: auto;
+}
+
+.titles {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 56px 0 14px;
+}
+
+.hello {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.title {
+    max-width: 240px;
+    font-family: var(--font-titre);
+    font-size: 35px;
+    font-weight: 400;
+    line-height: 37px;
+}
+
+/* Choix du compte */
+.accounts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.account {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    background: var(--fond);
+    font: inherit;
+    text-align: left;
+    color: var(--texte);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.account:hover {
+    border-color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--jaune-doux);
+    font-weight: 800;
+    color: var(--violet);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.accountTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.accountName {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.accountEmail {
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Encart d'information */
+.info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--rayon);
+    background: var(--jaune-doux);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.infoIcon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--fond);
+    color: var(--violet);
+}

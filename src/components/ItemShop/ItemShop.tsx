@@ -3,12 +3,12 @@
 import { useApp } from "@/components/AppState/AppState";
 import EmptyState from "@/components/EmptyState/EmptyState";
 import ItemCard from "@/components/ItemCard/ItemCard";
-import { items } from "@/lib/items";
 import styles from "./ItemShop.module.css";
 
 // Grille d’items : boutique complète, ou uniquement les items obtenus
 export default function ItemShop({ onlyOwned }: { onlyOwned?: boolean }) {
-    const { state } = useApp();
+    const { state, catalog } = useApp();
+    const { items } = catalog;
     const list = onlyOwned ? items.filter((i) => state.inventory.includes(i.id)) : items;
 
     if (!list.length) {
@@ -16,7 +16,7 @@ export default function ItemShop({ onlyOwned }: { onlyOwned?: boolean }) {
     }
     return (
         <ul className={styles.grid}>
-            {list.map((item) => <ItemCard key={item.id} item={item} points={state.points} owned={state.inventory.includes(item.id)} />)}
+            {list.map((item) => <ItemCard wide={item.id === "conteuse-bluni"} key={item.id} item={item} points={state.points} owned={state.inventory.includes(item.id)} />)}
         </ul>
     );
 }

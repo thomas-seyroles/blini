@@ -52,15 +52,15 @@ export default function TabBar() {
     const onClick = (e: React.MouseEvent) => {
         if (tabOf(e) && motionOk.current) fromLeft.current = notchLeft(root.current!);
     };
-    const onDown = contextSafe((e: React.PointerEvent) => {
+    const onDown = (e: React.PointerEvent) => {
         const tab = tabOf(e);
-        if (tab && motionOk.current) press(tab);
-    });
-    const onUp = contextSafe((e: React.PointerEvent) => {
+        if (tab && motionOk.current) contextSafe(press)(tab);
+    };
+    const onUp = (e: React.PointerEvent) => {
         const tab = tabOf(e);
         if (!tab || !motionOk.current || tab.contains(e.relatedTarget as Node)) return;
-        release(tab);
-    });
+        contextSafe(release)(tab);
+    };
 
     return (
         <nav

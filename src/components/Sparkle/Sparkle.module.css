@@ -1,0 +1,9 @@
+.sparkle {
+    display: block;
+    background-color: var(--jaune);
+    mask: url("/images/decors/etincelle.svg") center / contain no-repeat;
+}
+
+.violet {
+    background-color: var(--violet);
+}

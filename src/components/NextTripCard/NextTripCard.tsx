@@ -20,7 +20,7 @@ export default function NextTripCard({ role, trip }: NextTripCardProps) {
                 <SectionTitle title="Mon prochain trajet" />
                 <div className={`${styles.card} ${styles.empty}`}>
                     <div className={styles.lulu}>
-                        <Image src="/images/mascotte-triste.png" alt="" width={66} height={76} />
+                        <Image src="/images/mascottes/triste.webp" alt="" width={66} height={76} />
                     </div>
                     <h3 className={styles.emptyTitle}>Aucun trajet prévu</h3>
                     <p className={styles.emptyText}>
@@ -42,7 +42,7 @@ export default function NextTripCard({ role, trip }: NextTripCardProps) {
                 <p className={styles.date}>{trip.date}</p>
                 <div className={styles.route}>
                     <span className={styles.city}>{trip.from}</span>
-                    <Image src={isDriver ? "/images/route-violet.svg" : "/images/route.svg"} alt="" width={110} height={14} />
+                    <Image src={isDriver ? "/images/decors/route-violet.svg" : "/images/decors/route.svg"} alt="" width={110} height={14} />
                     <span className={styles.city}>{trip.to}</span>
                 </div>
                 {isDriver ? (
@@ -73,8 +73,8 @@ export default function NextTripCard({ role, trip }: NextTripCardProps) {
                 <hr className={styles.separator} />
                 <div className={styles.cta}>
                     {isDriver
-                        ? <Button label="Préparer les histoires du trajet" link="/histoires" transitionTypes={["nav-forward"]} type="primary" />
-                        : <Button label="Préparer les histoires" link="/histoires" transitionTypes={["nav-forward"]} type="accent" />}
+                        ? <Button label="Préparer les histoires du trajet" link={trip.playlistHref ?? "/histoires/bibliotheque"} transitionTypes={["nav-forward"]} type="primary" />
+                        : <Button label="Préparer les histoires" link={trip.playlistHref ?? "/histoires/bibliotheque"} transitionTypes={["nav-forward"]} type="accent" />}
                 </div>
             </div>
         </section>

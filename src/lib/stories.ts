@@ -1,5 +1,7 @@
 export type Region = { slug: string; name: string; cover: string | null };
 
+export type Contributor = { id: string; name: string; photo: string };
+
 export type Story = {
     id: string;
     title: string;
@@ -8,109 +10,34 @@ export type Story = {
     age: string;
     durationSec: number;
     price: number;
+    luniiAuthor: string;
+    contributors: Contributor[];
 };
 
 export type Pack = { id: string; title: string; regionSlug: string; storyIds: string[]; price: number };
 
-export const regions: Region[] = [
-    { slug: "ile-de-france", name: "Île-de-France", cover: "/images/couvertures/ile-de-france.png" },
-    { slug: "bretagne", name: "Bretagne", cover: "/images/couvertures/bretagne.png" },
-    { slug: "provence-alpes-cote-d-azur", name: "Provence-Alpes-Côte d’Azur", cover: "/images/couvertures/provence.png" },
-    { slug: "alsace", name: "Alsace", cover: "/images/couvertures/alsace.png" },
-    { slug: "bourgogne-franche-comte", name: "Bourgogne-Franche-Comté", cover: null },
-    { slug: "auvergne-rhone-alpes", name: "Auvergne-Rhône-Alpes", cover: null },
-    { slug: "occitanie", name: "Occitanie", cover: null },
-];
+// Collection complète : 30 histoires par région à 2,99 €, moins 30 % à l'achat global (les histoires sont ajoutées au fil du temps)
+export const STORIES_PER_REGION = 30;
+export const STORY_PRICE_CENTS = 299;
+export const PACK_DISCOUNT_PERCENT = 30;
 
-// [titre, auteur de l’anecdote, âge, durée en secondes]
-const seeds: Record<string, [string, string, string, number][]> = {
-    "ile-de-france": [
-        ["Le fantôme du métro Arts-et-Métiers", "Karim, passager", "dès 4 ans", 480],
-        ["La baguette qui voulait voir la tour Eiffel", "Léa, conductrice", "dès 3 ans", 420],
-        ["Le canard du bassin de la Villette", "Tom, passager", "dès 5 ans", 540],
-    ],
-    bretagne: [
-        ["Le phare qui avait peur du noir", "Soline, passagère", "dès 4 ans", 510],
-        ["La crêpe géante de Locronan", "Yann, conducteur", "dès 3 ans", 390],
-        ["Le korrigan du pont de Pont-Aven", "Maëlle, passagère", "dès 6 ans", 600],
-    ],
-    "provence-alpes-cote-d-azur": [
-        ["La cigale de Manosque", "Camille, passagère", "dès 3 ans", 360],
-        ["Le mistral qui chuchotait", "Hugo, passager", "dès 5 ans", 480],
-        ["Le champ de lavande qui chantait", "Zoé, conductrice", "dès 4 ans", 450],
-    ],
-    alsace: [
-        ["La cigogne qui perdait ses lunettes", "Margaux, passagère", "dès 4 ans", 420],
-        ["Le sapin de Noël de Colmar", "Étienne, conducteur", "dès 3 ans", 330],
-        ["Le bretzel magique", "Inès, passagère", "dès 5 ans", 500],
-    ],
-    "bourgogne-franche-comte": [
-        ["La boulangerie de Saulieu", "Théo, passager", "dès 4 ans", 440],
-        ["Le pont qui chantait sous la pluie", "Théo, passager", "dès 5 ans", 520],
-        ["L’escargot gourmand de Dijon", "Sophie, conductrice", "dès 3 ans", 380],
-    ],
-    "auvergne-rhone-alpes": [
-        ["Le volcan qui ronflait", "Julie, conductrice", "dès 4 ans", 470],
-        ["La fée du lac d’Annecy", "Nadia, conductrice", "dès 5 ans", 530],
-        ["Le tram qui rêvait de montagne", "Marc, conducteur", "dès 6 ans", 560],
-    ],
-    occitanie: [
-        ["Le dragon du canal du Midi", "Clara, passagère", "dès 5 ans", 490],
-        ["La cassolette qui parlait", "Bastien, passager", "dès 4 ans", 400],
-        ["Le moulin de Carcassonne", "Lola, passagère", "dès 6 ans", 580],
-    ],
-};
+// Prix dynamique d'un pack : les histoires déjà possédées dans la région sont déduites avant la remise
+export const packPriceCents = (owned: number) => Math.round(Math.max(0, STORIES_PER_REGION - owned) * STORY_PRICE_CENTS * (100 - PACK_DISCOUNT_PERCENT) / 100);
+export const PACK_PRICE_CENTS = packPriceCents(0);
+export const ownedInRegion = (regionSlug: string, ownedIds: string[], stories: Pick<Story, "id" | "regionSlug">[]) =>
+    stories.filter((s) => s.regionSlug === regionSlug && ownedIds.includes(s.id)).length;
+export const packPrice = (regionSlug: string, ownedIds: string[], stories: Story[]) => packPriceCents(ownedInRegion(regionSlug, ownedIds, stories)) / 100;
+// Prix des histoires restantes sans la remise de pack
+export const packFullPrice = (regionSlug: string, ownedIds: string[], stories: Story[]) => (Math.max(0, STORIES_PER_REGION - ownedInRegion(regionSlug, ownedIds, stories)) * STORY_PRICE_CENTS) / 100;
 
-export const stories: Story[] = Object.entries(seeds).flatMap(([regionSlug, list]) =>
-    list.map(([title, author, age, durationSec], i) => ({
-        id: `${regionSlug}-${i + 1}`,
-        title,
-        regionSlug,
-        author: `D’après l’anecdote de ${author}`,
-        age,
-        durationSec,
-        price: 1.99,
-    })),
-);
-
-export const packs: Pack[] = regions.map((r) => ({
-    id: `pack-${r.slug}`,
-    title: `Pack ${r.name}`,
-    regionSlug: r.slug,
-    storyIds: stories.filter((s) => s.regionSlug === r.slug).map((s) => s.id),
-    price: 4.9,
-}));
-
-export const storyById = (id: string) => stories.find((s) => s.id === id);
-export const packById = (id: string) => packs.find((p) => p.id === id);
-export const regionBySlug = (slug: string) => regions.find((r) => r.slug === slug);
-export const storiesOfRegion = (slug: string) => stories.filter((s) => s.regionSlug === slug);
+export const packId = (regionSlug: string) => `pack-${regionSlug}`;
 
 export const duration = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
-
 export const minutes = (sec: number) => `${Math.round(sec / 60)} min`;
 export const price = (n: number) => `${n.toFixed(2).replace(".", ",")} €`;
-export const regionName = (slug: string) => regionBySlug(slug)?.name ?? slug;
-export const packOfRegion = (slug: string) => packs.find((p) => p.regionSlug === slug);
 
-export const synopsis = (s: Story) =>
-    `Une histoire inventée par l’équipe d’auteurs Lunii à partir d’une anecdote vécue en ${regionName(s.regionSlug)}. ` +
+export const synopsis = (s: Story, regionName: string) =>
+    `Une histoire inventée par l’équipe d’auteurs Lunii à partir d’une anecdote vécue en ${regionName}. ` +
     `${s.title} t’emmène sur la route pour ${minutes(s.durationSec)} d’écoute, avec des personnages et des lieux à reconnaître par la fenêtre.`;
 
-// Régions traversées par un trajet (maquette : villes connues seulement)
-const cityRegion: Record<string, string> = {
-    Paris: "ile-de-france",
-    Lyon: "auvergne-rhone-alpes",
-    Marseille: "provence-alpes-cote-d-azur",
-    Strasbourg: "alsace",
-    Toulouse: "occitanie",
-    Dijon: "bourgogne-franche-comte",
-};
-export const defaultRouteRegions = ["ile-de-france", "bourgogne-franche-comte", "auvergne-rhone-alpes"];
-
-export function regionsOfRoute(from: string, to: string) {
-    const parisLyon = [from, to].sort().join() === "Lyon,Paris";
-    const list = [cityRegion[from], ...(parisLyon ? ["bourgogne-franche-comte"] : []), cityRegion[to]];
-    const found = [...new Set(list.filter(Boolean))];
-    return found.length ? found : defaultRouteRegions;
-}
+export type CartLine = { kind: "story" | "pack"; id: string };

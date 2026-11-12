@@ -43,7 +43,7 @@
 
 .regionCover {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 565 / 800;
   border-radius: 14px;
   font-size: 40px;
 }
@@ -59,6 +59,20 @@
   aspect-ratio: 16 / 10;
   border-radius: var(--rayon);
   font-size: 80px;
+}
+
+.heroFull {
+  width: 100%;
+  aspect-ratio: 565 / 800;
+  border-radius: var(--rayon);
+  font-size: 80px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .title {

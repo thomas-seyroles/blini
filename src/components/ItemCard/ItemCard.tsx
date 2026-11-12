@@ -8,13 +8,14 @@ type ItemCardProps = {
     item: Item;
     points: number;
     owned: boolean;
+    wide?: boolean;
 }
 
-export default function ItemCard({ item, points, owned }: ItemCardProps) {
+export default function ItemCard({ item, points, owned, wide }: ItemCardProps) {
     const missing = item.cost - points;
     const state = owned ? styles.owned : missing > 0 ? styles.locked : styles.available;
     return (
-        <li className={styles.cell}>
+        <li className={`${styles.cell} ${wide ? styles.wide : ""}`}>
             <Link href={`/cadeaux/items/${item.id}`} transitionTypes={["nav-forward"]} className={`${styles.card} ${state}`}>
                 <span className={`${styles.visual} ${styles[item.tint]}`}>
                     <Image src={item.image} alt="" width={72} height={64} className={styles.art} />
@@ -22,7 +23,7 @@ export default function ItemCard({ item, points, owned }: ItemCardProps) {
                 <span className={styles.title}>{item.title}</span>
                 <span className={styles.price}>
                     {fmt(item.cost)} pts
-                    <Image src="/images/cadeaux/points18.svg" alt="" width={18} height={18} />
+                    <Image src="/images/icones/points.svg" alt="" width={18} height={18} />
                 </span>
                 <span className={styles.action}>
                     {owned ? <><Check size={16} />Obtenu</> : missing > 0 ? <><Lock size={16} />Encore {fmt(missing)} pts</> : "Échanger"}

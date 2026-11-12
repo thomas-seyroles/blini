@@ -1,73 +1,48 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { seedAnecdotes, type Anecdote } from "@/lib/anecdotes";
-import { packById } from "@/lib/stories";
-import { seedTrips, type BookedTrip } from "@/lib/trips";
-import type { Role } from "@/lib/trip";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import type { AppData } from "@/lib/appData";
+import { indexCatalog, type Catalog, type CatalogIndex } from "@/lib/catalog";
+import type { CartLine } from "@/lib/stories";
 
-export type CartLine = { kind: "story" | "pack"; id: string };
+export type { CartLine };
 
-export type AppState = {
-    profile: { firstName: string; lastName: string; email: string; role: Role };
-    linked: { blablacar: boolean; lunii: boolean };
-    settings: Record<string, boolean | string>;
-    points: number;
-    cart: CartLine[];
-    ownedStories: string[];
-    gifts: string[];
-    inventory: string[];
-    anecdotes: Anecdote[];
-    trips: BookedTrip[];
-    nowPlaying: string | null;
-};
+// Données du compte (serveur) + état propre à l'appareil (panier, lecture en cours, recherche)
+export type AppState = AppData & { cart: CartLine[]; nowPlaying: string | null; queue: string[] | null };
 
-export const initialState: AppState = {
-    profile: { firstName: "Théo", lastName: "Martin", email: "theo.martin@mail.fr", role: "passager" },
-    linked: { blablacar: true, lunii: false },
-    settings: {},
-    points: 1240,
-    cart: [],
-    ownedStories: ["ile-de-france-1"],
-    gifts: ["bretagne-1", "alsace-2", "occitanie-1"],
-    inventory: [],
-    anecdotes: seedAnecdotes,
-    trips: seedTrips,
-    nowPlaying: "ile-de-france-1",
-};
+type Local = { cart: CartLine[]; nowPlaying: string | null; queue: string[] | null; search: string | null };
 
-type Actions = {
-    update: (fn: (s: AppState) => AppState) => void;
+type App = {
+    state: AppState;
+    catalog: CatalogIndex;
+    hydrated: boolean;
+    search: string | null;
+    setSearch: (raw: string) => void;
     addToCart: (line: CartLine) => void;
     removeFromCart: (line: CartLine) => void;
+    setCart: (fn: (cart: CartLine[]) => CartLine[]) => void;
     clearCart: () => void;
-    checkout: () => void;
-    earnPoints: (n: number) => void;
-    spendPoints: (n: number) => boolean;
-    addAnecdote: (a: Anecdote) => void;
-    updateAnecdote: (id: string, patch: Partial<Anecdote>) => void;
-    deleteAnecdote: (id: string) => void;
-    addTrip: (t: BookedTrip) => void;
-    updateTrip: (id: string, patch: Partial<BookedTrip>) => void;
-    removeTrip: (id: string) => void;
-    reset: () => void;
+    play: (storyId: string, queue?: string[]) => void;
+    flash: string;
+    setFlash: (message: string) => void;
 };
 
-type App = Actions & { state: AppState; hydrated: boolean };
-
-const KEY = "bluni-state-v1";
+const KEY = "bluni-local-v2";
+const empty: Local = { cart: [], nowPlaying: null, queue: null, search: null };
 const Context = createContext<App | null>(null);
 
 const same = (a: CartLine, b: CartLine) => a.kind === b.kind && a.id === b.id;
 
-export function AppStateProvider({ children }: { children: ReactNode }) {
-    const [state, setState] = useState(initialState);
+export function AppStateProvider({ data, catalog, children }: { data: AppData; catalog: Catalog; children: ReactNode }) {
+    const [local, setLocal] = useState(empty);
     const [hydrated, setHydrated] = useState(false);
+    const [flash, setFlash] = useState("");
 
     useEffect(() => {
         try {
             const raw = localStorage.getItem(KEY);
-            if (raw) setState({ ...initialState, ...JSON.parse(raw) });
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- lecture du localStorage, impossible au rendu serveur
+            if (raw) setLocal({ ...empty, ...JSON.parse(raw) });
         } catch {}
         setHydrated(true);
     }, []);
@@ -75,38 +50,30 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         if (!hydrated) return;
         try {
-            localStorage.setItem(KEY, JSON.stringify(state));
+            localStorage.setItem(KEY, JSON.stringify(local));
         } catch {}
-    }, [state, hydrated]);
+    }, [local, hydrated]);
 
-    const update = (fn: (s: AppState) => AppState) => setState(fn);
+    const index = useMemo(() => indexCatalog(catalog), [catalog]);
+    const state = useMemo(() => ({ ...data, cart: local.cart, nowPlaying: local.nowPlaying, queue: local.queue }), [data, local.cart, local.nowPlaying, local.queue]);
 
-    const actions: Actions = {
-        update,
-        addToCart: (line) => update((s) => (s.cart.some((l) => same(l, line)) ? s : { ...s, cart: [...s.cart, line] })),
-        removeFromCart: (line) => update((s) => ({ ...s, cart: s.cart.filter((l) => !same(l, line)) })),
-        clearCart: () => update((s) => ({ ...s, cart: [] })),
-        checkout: () =>
-            update((s) => {
-                const ids = s.cart.flatMap((l) => (l.kind === "pack" ? packById(l.id)?.storyIds ?? [] : [l.id]));
-                return { ...s, cart: [], ownedStories: [...new Set([...s.ownedStories, ...ids])] };
-            }),
-        earnPoints: (n) => update((s) => ({ ...s, points: s.points + n })),
-        spendPoints: (n) => {
-            if (state.points < n) return false;
-            update((s) => ({ ...s, points: s.points - n }));
-            return true;
-        },
-        addAnecdote: (a) => update((s) => ({ ...s, anecdotes: [a, ...s.anecdotes] })),
-        updateAnecdote: (id, patch) => update((s) => ({ ...s, anecdotes: s.anecdotes.map((a) => (a.id === id ? { ...a, ...patch } : a)) })),
-        deleteAnecdote: (id) => update((s) => ({ ...s, anecdotes: s.anecdotes.filter((a) => a.id !== id) })),
-        addTrip: (t) => update((s) => ({ ...s, trips: [t, ...s.trips] })),
-        updateTrip: (id, patch) => update((s) => ({ ...s, trips: s.trips.map((t) => (t.id === id ? { ...t, ...patch } : t)) })),
-        removeTrip: (id) => update((s) => ({ ...s, trips: s.trips.filter((t) => t.id !== id) })),
-        reset: () => setState(initialState),
-    };
+    // Actions stables d'un rendu à l'autre : elles ne dépendent que des setters
+    const actions = useMemo(() => {
+        const setCart = (fn: (cart: CartLine[]) => CartLine[]) => setLocal((l) => ({ ...l, cart: fn(l.cart) }));
+        return {
+            setSearch: (search: string) => setLocal((l) => ({ ...l, search })),
+            addToCart: (line: CartLine) => setCart((c) => (c.some((l) => same(l, line)) ? c : [...c, line])),
+            removeFromCart: (line: CartLine) => setCart((c) => c.filter((l) => !same(l, line))),
+            setCart,
+            clearCart: () => setCart(() => []),
+            play: (nowPlaying: string, queue?: string[]) => setLocal((l) => ({ ...l, nowPlaying, queue: queue ?? null })),
+            setFlash,
+        };
+    }, []);
 
-    return <Context value={{ state, hydrated, ...actions }}>{children}</Context>;
+    const value: App = { state, catalog: index, hydrated, search: local.search, flash, ...actions };
+
+    return <Context value={value}>{children}</Context>;
 }
 
 export function useApp() {
@@ -114,3 +81,5 @@ export function useApp() {
     if (!ctx) throw new Error("useApp doit être utilisé dans AppStateProvider");
     return ctx;
 }
+
+export const useCatalog = () => useApp().catalog;

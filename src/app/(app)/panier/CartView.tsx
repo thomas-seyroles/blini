@@ -4,15 +4,14 @@ import { Gift } from "lucide-react";
 import { useApp } from "@/components/AppState/AppState";
 import Button from "@/components/Button/Button";
 import { useCartFlow } from "@/components/CartFlow/CartFlow";
-import { packFull, packSaving, resolveCart, totals } from "@/components/CartFlow/pricing";
+import { isBlocked, resolveCart, totals } from "@/components/CartFlow/pricing";
 import CartLineRow from "@/components/CartLineRow/CartLineRow";
 import EmptyState from "@/components/EmptyState/EmptyState";
 import FlowHeader from "@/components/FlowHeader/FlowHeader";
 import FlowPage from "@/components/FlowPage/FlowPage";
-import flow from "@/components/FlowPage/FlowPage.module.css";
 import PromoField from "@/components/PromoField/PromoField";
 import OrderSummary from "@/components/OrderSummary/OrderSummary";
-import { duration, price } from "@/lib/stories";
+import { STORIES_PER_REGION, duration, packFullPrice, packPrice, price } from "@/lib/stories";
 import styles from "./panier.module.css";
 
 export default function CartView() {
@@ -20,17 +19,17 @@ export default function CartView() {
     const { promo, setPromo } = useCartFlow();
     const { packOfRegion, regionBySlug, regionName } = catalog;
 
-    const lines = resolveCart(state.cart, state.ownedStories, catalog);
+    const owned = [...state.ownedStories, ...state.gifts];
+    const lines = resolveCart(state.cart, owned, catalog);
     const { discount, payable } = totals(lines, promo);
-    const blocked = lines.some((l) => l.ownedIds.length > 0);
+    const blocked = isBlocked(lines);
 
     // Suggestion : au moins 2 histoires non possédées d'une même région sans le pack
     const suggestions = [...new Set(lines.flatMap((l) => (l.kind === "story" ? [l.story.regionSlug] : [])))].flatMap((slug) => {
         const pack = packOfRegion(slug);
         const same = lines.filter((l) => l.kind === "story" && l.story.regionSlug === slug);
         const inCart = lines.some((l) => l.kind === "pack" && l.pack.id === pack?.id);
-        const noneOwned = pack?.storyIds.every((id) => !state.ownedStories.includes(id));
-        return pack && same.length >= 2 && !inCart && noneOwned ? [{ pack, same }] : [];
+        return pack && same.length >= 2 && !inCart ? [{ pack, same }] : [];
     });
 
     const switchToPack = (packId: string, storyIds: string[]) =>
@@ -52,7 +51,7 @@ export default function CartView() {
                                     title={l.story.title}
                                     meta={`${regionName(l.story.regionSlug)} · ${duration(l.story.durationSec)} · ${l.story.age}`}
                                     cover={regionBySlug(l.story.regionSlug)?.cover ?? null}
-                                    price={price(l.price)}
+                                    price={l.included ? "Incluse" : price(l.price)}
                                     warning={l.ownedIds.length ? "Tu possèdes déjà cette histoire. Retire-la pour continuer." : undefined}
                                     onRemove={() => removeFromCart(l.line)}
                                 />
@@ -60,11 +59,10 @@ export default function CartView() {
                                 <CartLineRow
                                     key={`pack-${l.pack.id}`}
                                     title={l.pack.title}
-                                    meta={`${l.stories.length} histoires · ${regionName(l.pack.regionSlug)}`}
+                                    meta={`${l.stories.length} histoires · ${regionName(l.pack.regionSlug)}${l.ownedIds.length ? ` · ${l.ownedIds.length} déjà dans ta bibliothèque, déduite${l.ownedIds.length > 1 ? "s" : ""} du prix` : ""}`}
                                     cover={regionBySlug(l.pack.regionSlug)?.cover ?? null}
                                     price={price(l.price)}
-                                    badge={`Tu économises ${price(packSaving(l.pack, catalog))}`}
-                                    warning={l.ownedIds.length ? "Ce pack contient une histoire que tu possèdes déjà. Retire-le pour continuer." : undefined}
+                                    badge={`Tu économises ${price(l.full - l.price)}`}
                                     onRemove={() => removeFromCart(l.line)}
                                 >
                                     <ul className={styles.packStories}>
@@ -83,7 +81,7 @@ export default function CartView() {
                             <div className={styles.suggestionTexts}>
                                 <p className={styles.suggestionTitle}>Passe au pack</p>
                                 <p className={styles.suggestionHint}>
-                                    {pack.title} : {pack.storyIds.length} histoires pour {price(pack.price)} au lieu de {price(packFull(pack, catalog))}, tu économises {price(packSaving(pack, catalog))}
+                                    {pack.title} : {STORIES_PER_REGION} histoires (ajoutées au fil du temps) pour {price(packPrice(pack.regionSlug, owned, catalog.stories))} au lieu de {price(packFullPrice(pack.regionSlug, owned, catalog.stories))}, tu économises {price(packFullPrice(pack.regionSlug, owned, catalog.stories) - packPrice(pack.regionSlug, owned, catalog.stories))}
                                 </p>
                             </div>
                             <button type="button" className={styles.suggestionButton} onClick={() => switchToPack(pack.id, same.map((l) => (l.kind === "story" ? l.story.id : "")))}>

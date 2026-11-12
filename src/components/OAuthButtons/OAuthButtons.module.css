@@ -1,0 +1,42 @@
+.root {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 52px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    background: var(--fond);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--texte);
+    transition: background 0.15s;
+}
+
+.button:hover {
+    background: var(--jaune-doux);
+}
+
+.logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+}
+
+.lunii img {
+    position: absolute;
+    top: -21.42%;
+    left: -18.71%;
+    width: 141.49%;
+    height: 141.49%;
+}

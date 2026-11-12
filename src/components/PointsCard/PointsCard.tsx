@@ -38,40 +38,40 @@ function useCountTo(target: number) {
 }
 
 export default function PointsCard() {
-    const { state } = useApp();
+    const { state, catalog } = useApp();
     const shown = useCountTo(state.points);
-    const goal = nextGoal(state.points, state.inventory);
+    const goal = nextGoal(catalog.items, state.points, state.inventory);
     const ratio = goal ? Math.min(state.points / goal.cost, 1) : 1;
 
     return (
         <section className={styles.root} aria-label="Mes points">
             <p className={styles.label}>Points</p>
             <div className={styles.balance}>
-                <Image src="/images/cadeaux/surligneur.svg" alt="" width={190} height={30} className={styles.highlight} />
+                <Image src="/images/decors/surligneur.svg" alt="" width={190} height={30} className={styles.highlight} />
                 <p className={styles.value} aria-live="polite">
                     {fmt(shown)}
-                    <Image src="/images/cadeaux/etoile.svg" alt="" width={39} height={39} className={styles.star} />
+                    <Image src="/images/icones/etoile.svg" alt="" width={39} height={39} className={styles.star} />
                 </p>
             </div>
             <div className={styles.gauge} role="progressbar" aria-label="Progression vers le prochain objectif" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(ratio * 100)}>
                 <div className={styles.fill} style={{ width: `${ratio * 100}%` }} />
             </div>
             <p className={styles.goal}>
-                {goal ? `Plus que ${fmt(goal.cost - state.points)} pts avant ${goal.id === "casque-bluni" ? "le casque édition Bluni" : `« ${goal.title} »`}` : "Tu peux tout échanger dans la boutique, bravo !"}
+                {goal ? `Plus que ${fmt(goal.cost - state.points)} pts avant ${goal.id === "conteuse-bluni" ? "la conteuse édition Bluni" : `« ${goal.title} »`}` : "Tu peux tout échanger dans la boutique, bravo !"}
             </p>
             <ul className={styles.rules}>
                 {rules.map((r) => (
                     <li key={r.pts} className={styles.rule}>
                         <p className={styles.pts}>
                             {r.pts}
-                            <Image src="/images/cadeaux/points23.svg" alt="" width={23} height={23} />
+                            <Image src="/images/icones/points.svg" alt="" width={23} height={23} />
                         </p>
                         <p className={styles.text}>{r.text}</p>
                     </li>
                 ))}
             </ul>
             <Button label="Comment gagner des points" link="/cadeaux/points" transitionTypes={["nav-forward"]} icon={Sparkles} type="primary" />
-            <Image src="/images/cadeaux/mascotte.png" alt="" width={125} height={130} className={styles.mascot} priority />
+            <Image src="/images/mascottes/cadeau.webp" alt="" width={125} height={130} className={styles.mascot} priority />
         </section>
     );
 }

@@ -19,14 +19,14 @@ export default function PointsHistory() {
     const { state } = useApp();
 
     const gains = [
-        ...state.anecdotes.map((a) => ({ id: a.id, title: `Anecdote envoyée : ${a.title}`, date: a.sentAt, points: a.points })),
+        ...state.anecdotes.filter((a) => a.points > 0).map((a) => ({ id: a.id, title: `Anecdote : ${a.title}`, date: a.sentAt, points: a.points })),
         ...state.trips.filter((t) => t.status === "termine").map((t) => ({ id: t.id, title: `Trajet effectué : ${t.from} → ${t.to}`, date: t.day, points: t.points })),
     ]
         .map((g, i) => ({ ...g, key: sortKey(g.date), i }))
         .sort((a, b) => b.key - a.key || a.i - b.i);
 
     if (!gains.length) {
-        return <EmptyState title="Pas encore de gains" text="Envoie une anecdote ou effectue un trajet pour gagner tes premiers points." action={{ label: "Raconte ton histoire", href: "/raconter" }} />;
+        return <EmptyState title="Pas encore de gains" text="Fais valider une anecdote ou effectue un trajet pour gagner tes premiers points." action={{ label: "Raconte ton histoire", href: "/raconter" }} />;
     }
     return (
         <ul className={styles.list}>

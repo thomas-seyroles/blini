@@ -1,4 +1,6 @@
-export type Role = "passager" | "conducteur";
+import type { Role } from "./enums";
+
+export type { Role };
 
 export type Trip = {
     date: string;
@@ -12,6 +14,7 @@ export type Trip = {
     passengers?: string[];
     seatsFree?: number;
     href?: string;
+    playlistHref?: string;
 };
 
 export type Guests = { adultes: number; enfants: number; bebes: number; places: number };

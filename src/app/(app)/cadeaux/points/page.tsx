@@ -8,11 +8,10 @@ import sub from "../sub.module.css";
 import styles from "./page.module.css";
 
 const rules = [
-  { pts: "+20 pts", name: "Envoi d’une anecdote", text: "Dès que tu envoies ton enregistrement, tu gagnes tes premiers points." },
   { pts: "+50 pts", name: "Validation par les passagers", text: "Quand tous les passagers ont donné leur consentement et que ton histoire est validée." },
   { pts: "+300 pts", name: "Utilisation par Lunii", text: "Si l’équipe d’auteurs Lunii retient ton anecdote pour en faire une histoire." },
-  { pts: "+40 pts", name: "Trajet effectué", text: "Chaque trajet terminé sur Bluni te rapporte des points, plus encore sur un trajet certifié." },
-  { pts: "+100 pts", name: "Parrainage", text: "Quand un proche s’inscrit avec ton code et fait son premier trajet." },
+  { pts: "+40 pts", name: "Trajet effectué", text: "Chaque trajet terminé sur Bluni en tant que passager te rapporte des points." },
+  { pts: "+60 pts", name: "Trajet conduit", text: "Chaque trajet que tu as publié et conduit jusqu’au bout te rapporte des points." },
 ];
 
 export default function Page() {

@@ -8,6 +8,10 @@
     background: var(--fond);
 }
 
+.root:focus-visible {
+    outline: none;
+}
+
 .root::backdrop {
     background: rgba(22, 26, 36, 0.6);
 }

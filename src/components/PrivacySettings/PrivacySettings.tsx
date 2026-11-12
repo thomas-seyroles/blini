@@ -7,11 +7,12 @@ import Button from "@/components/Button/Button";
 import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
 import SettingRow from "@/components/SettingRow/SettingRow";
 import flow from "@/components/FlowPage/FlowPage.module.css";
-import { flag, setSetting } from "@/lib/account";
+import { flag } from "@/lib/account";
+import { deleteRecordings, saveSetting } from "@/server/actions/account";
 import styles from "./PrivacySettings.module.css";
 
 export default function PrivacySettings() {
-    const { state, update } = useApp();
+    const { state } = useApp();
     const [message, setMessage] = useState("");
     const [confirm, setConfirm] = useState(false);
 
@@ -33,13 +34,13 @@ export default function PrivacySettings() {
                     icon={Mic}
                     title="Conserver mes enregistrements audio"
                     subtitle="Pour que l’équipe Lunii puisse les réécouter"
-                    toggle={{ checked: flag(state, "gardeVoix"), onChange: (v) => update(setSetting("gardeVoix", v)) }}
+                    toggle={{ checked: flag(state, "gardeVoix"), onChange: (v) => saveSetting("gardeVoix", v) }}
                 />
                 <SettingRow
                     icon={Camera}
                     title="Conserver mes photos"
                     subtitle="Jointes à tes anecdotes, jamais publiées sans accord"
-                    toggle={{ checked: flag(state, "gardePhotos"), onChange: (v) => update(setSetting("gardePhotos", v)) }}
+                    toggle={{ checked: flag(state, "gardePhotos"), onChange: (v) => saveSetting("gardePhotos", v) }}
                 />
             </div>
             <section className={`${flow.box} ${styles.card}`}>
@@ -57,7 +58,7 @@ export default function PrivacySettings() {
                 confirmLabel="Effacer"
                 onCancel={() => setConfirm(false)}
                 onConfirm={() => {
-                    update((s) => ({ ...s, anecdotes: s.anecdotes.filter((a) => a.status >= 2) }));
+                    deleteRecordings();
                     setConfirm(false);
                     setMessage("Enregistrements effacés.");
                 }}

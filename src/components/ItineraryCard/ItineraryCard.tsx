@@ -23,7 +23,7 @@ export default function ItineraryCard({ day, departTime, arrivalTime, from, to, 
                     <p>{departTime}</p>
                     <p>{arrivalTime}</p>
                 </div>
-                <Image src="/images/reservation/trace.svg" alt="" width={12} height={76} />
+                <Image src="/images/decors/trace-reservation.svg" alt="" width={12} height={76} />
                 <div className={styles.places}>
                     <div>
                         <p className={styles.place}>{from}</p>

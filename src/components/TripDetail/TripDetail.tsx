@@ -3,10 +3,10 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { Headphones, Star } from "lucide-react";
-import { addMinutes, distanceKm, durationLabel, estimatePrice, journeyById, placesLabel, travelMinutes, eur } from "@/lib/journeys";
+import { placesLabel, eur } from "@/lib/journeys";
 import { dayInfo } from "@/lib/trip";
-import { driverByName, seatsFree, tripDate, tripRole, type BookedTrip } from "@/lib/trips";
-import { pdpAt } from "@/lib/pdp";
+import { seatsFree, type BookedTrip } from "@/lib/trips";
+import { answerRequest, cancelTrip } from "@/server/actions/trips";
 import { useApp } from "../AppState/AppState";
 import Button from "../Button/Button";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
@@ -29,19 +29,18 @@ function Shell({ children }: { children?: ReactNode }) {
 }
 
 function Driver({ trip }: { trip: BookedTrip }) {
-    const driver = driverByName(trip.driver);
+    const { driver } = trip.journey;
     return (
         <>
-            <h2 className={flow.heading}>{driver?.female ? "Ta conductrice" : "Ton conducteur"}</h2>
+            <h2 className={flow.heading}>{driver.female ? "Ta conductrice" : "Ton conducteur"}</h2>
             <section className={`${flow.box} ${flow.boxYellow} ${styles.driver}`}>
-                <Image className={styles.photo} src={driver?.photo ?? pdpAt(0)} alt="" width={52} height={52} />
+                <Image className={styles.photo} src={driver.photo} alt="" width={52} height={52} />
                 <div className={styles.driverTexts}>
-                    <p className={styles.name}>{trip.driver}</p>
-                    {driver && (
-                        <p className={styles.meta}>
-                            <Star size={13} /> {driver.rating} · {driver.reviews} avis · {driver.car} {driver.color}
-                        </p>
-                    )}
+                    <p className={styles.name}>{driver.name}</p>
+                    <p className={styles.meta}>
+                        <Star size={13} /> {driver.rating} · {driver.reviews} avis · {driver.car} {driver.color}
+                    </p>
+                    {trip.pending && trip.status === "a-venir" && <p className={styles.meta}>En attente de confirmation</p>}
                 </div>
                 <Headphones size={18} aria-label="Casque Lunii à bord" />
             </section>
@@ -49,9 +48,8 @@ function Driver({ trip }: { trip: BookedTrip }) {
     );
 }
 
-function Passengers({ trip, onChange }: { trip: BookedTrip; onChange: (patch: Partial<BookedTrip>) => void }) {
-    const passagers = trip.passagers ?? [];
-    const demandes = trip.demandes ?? [];
+function Passengers({ trip }: { trip: BookedTrip }) {
+    const { passagers, demandes } = trip;
     const free = seatsFree(trip);
     const upcoming = trip.status === "a-venir";
 
@@ -60,8 +58,8 @@ function Passengers({ trip, onChange }: { trip: BookedTrip; onChange: (patch: Pa
             <h2 className={flow.heading}>Passagers ({passagers.length})</h2>
             {passagers.length ? (
                 <ul className={styles.people}>
-                    {passagers.map((p) => (
-                        <li key={p.name} className={styles.person}>
+                    {passagers.map((p, i) => (
+                        <li key={`${p.name}-${i}`} className={styles.person}>
                             <span className={styles.avatar}>{p.name[0]}</span>
                             <span className={styles.personName}>{p.name}</span>
                             <span className={styles.meta}>{placesLabel(p.places)}</span>
@@ -88,7 +86,7 @@ function Passengers({ trip, onChange }: { trip: BookedTrip; onChange: (patch: Pa
                                     <button
                                         type="button"
                                         className={styles.refuse}
-                                        onClick={() => onChange({ demandes: demandes.filter((x) => x.id !== d.id) })}
+                                        onClick={() => answerRequest(d.id, false)}
                                     >
                                         Refuser
                                     </button>
@@ -96,10 +94,7 @@ function Passengers({ trip, onChange }: { trip: BookedTrip; onChange: (patch: Pa
                                         type="button"
                                         className={styles.accept}
                                         disabled={!fits}
-                                        onClick={() => onChange({
-                                            passagers: [...passagers, { name: d.name, places: d.places }],
-                                            demandes: demandes.filter((x) => x.id !== d.id),
-                                        })}
+                                        onClick={() => answerRequest(d.id, true)}
                                     >
                                         Accepter
                                     </button>
@@ -114,11 +109,10 @@ function Passengers({ trip, onChange }: { trip: BookedTrip; onChange: (patch: Pa
 }
 
 export default function TripDetail({ id }: { id: string }) {
-    const { state, hydrated, updateTrip } = useApp();
+    const { state } = useApp();
     const [confirming, setConfirming] = useState(false);
     const trip = state.trips.find((t) => t.id === id);
 
-    if (!hydrated) return <Shell />;
     if (!trip) {
         return (
             <Shell>
@@ -131,16 +125,12 @@ export default function TripDetail({ id }: { id: string }) {
         );
     }
 
-    const driver = tripRole(trip) === "conducteur";
-    const journey = trip.journeyId ? journeyById(trip.journeyId) : undefined;
-    const km = journey?.km ?? distanceKm(trip.from, trip.to);
-    const minutes = travelMinutes(km);
-    const places = trip.places ?? 2;
-    const price = trip.price ?? estimatePrice(km) * places;
+    const driver = trip.role === "conducteur";
+    const { journey, places, price } = trip;
     const cancelled = trip.status === "annule";
 
     const cancel = () => {
-        updateTrip(trip.id, { status: "annule" });
+        cancelTrip(trip.id);
         setConfirming(false);
     };
 
@@ -160,19 +150,19 @@ export default function TripDetail({ id }: { id: string }) {
             )}
 
             <ItineraryCard
-                day={dayInfo(tripDate(trip)).long}
+                day={dayInfo(trip.date).long}
                 departTime={trip.time}
-                arrivalTime={trip.arrivalTime ?? journey?.arrivalTime ?? addMinutes(trip.time, minutes)}
-                from={journey?.from ?? trip.from}
-                to={journey?.to ?? trip.to}
-                fromAddress={journey?.fromAddress}
-                toAddress={journey?.toAddress}
-                footer={`${journey?.duration ?? durationLabel(minutes)} de trajet · ${km} km`}
-                tone={journey?.kind === "standard" ? "yellow" : "violet"}
+                arrivalTime={trip.arrivalTime}
+                from={journey.from}
+                to={journey.to}
+                fromAddress={journey.fromAddress}
+                toAddress={journey.toAddress}
+                footer={`${journey.duration} de trajet · ${journey.km} km`}
+                tone={journey.kind === "standard" ? "yellow" : "violet"}
             />
 
             {!driver && <Driver trip={trip} />}
-            {driver && <Passengers trip={trip} onChange={(patch) => updateTrip(trip.id, patch)} />}
+            {driver && <Passengers trip={trip} />}
 
             <ul className={`${flow.box} ${flow.boxYellow} ${styles.facts}`}>
                 <li><span>{driver ? "Places proposées" : "Places réservées"}</span><strong>{placesLabel(places)}</strong></li>

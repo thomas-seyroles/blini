@@ -6,7 +6,7 @@ import { Lock } from "lucide-react";
 import { useApp } from "@/components/AppState/AppState";
 import Button from "@/components/Button/Button";
 import { useCartFlow } from "@/components/CartFlow/CartFlow";
-import { resolveCart, storyIdsOf, totals } from "@/components/CartFlow/pricing";
+import { isBlocked, resolveCart, storyIdsOf, totals } from "@/components/CartFlow/pricing";
 import FlowHeader from "@/components/FlowHeader/FlowHeader";
 import FlowPage from "@/components/FlowPage/FlowPage";
 import flow from "@/components/FlowPage/FlowPage.module.css";
@@ -25,8 +25,8 @@ export default function CartPayment() {
     const [paying, setPaying] = useState(false);
     const [error, setError] = useState("");
 
-    const lines = resolveCart(state.cart, state.ownedStories, catalog);
-    const blocked = lines.some((l) => l.ownedIds.length > 0);
+    const lines = resolveCart(state.cart, [...state.ownedStories, ...state.gifts], catalog);
+    const blocked = isBlocked(lines);
     const { discount, payable } = totals(lines, promo);
 
     useEffect(() => {

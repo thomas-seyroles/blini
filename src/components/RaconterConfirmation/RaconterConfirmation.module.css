@@ -36,13 +36,6 @@
     object-fit: contain;
 }
 
-.points {
-    font-size: 56px;
-    font-weight: 900;
-    text-align: center;
-    color: var(--violet);
-}
-
 .title {
     display: flex;
     flex-direction: column;

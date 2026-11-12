@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Bell, ChevronRight, CircleCheck, FileText, Globe, Contrast, Lock, Mic, CircleHelp, ShieldCheck, Users } from "lucide-react";
 import { useApp } from "@/components/AppState/AppState";
+import Badges from "@/components/Badges/Badges";
 import Button from "@/components/Button/Button";
 import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
+import PackageCta from "@/components/PackageCta/PackageCta";
 import LinkedAccountRow from "@/components/LinkedAccountRow/LinkedAccountRow";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import SettingRow from "@/components/SettingRow/SettingRow";
 import StatTile from "@/components/StatTile/StatTile";
-import { APPARENCES, LANGUES, certification, choice, flag, setSetting } from "@/lib/account";
-import type { Role } from "@/lib/trip";
+import { APPARENCES, LANGUES, certification, choice, flag } from "@/lib/account";
+import type { Role } from "@/lib/enums";
+import { deleteAccount, saveSetting, setLinked as linkAccount, setRole } from "@/server/actions/account";
+import { logout } from "@/server/actions/auth";
 import styles from "./AccountView.module.css";
 
 type Dialog = "blablacar" | "lunii" | "logout" | "delete" | null;
@@ -24,28 +28,20 @@ const ROLES: { id: Role; label: string }[] = [
 ];
 
 export default function AccountView() {
-    const { state, update, reset } = useApp();
-    const router = useRouter();
+    const { state, flash: saved, setFlash: setSaved } = useApp();
     const [dialog, setDialog] = useState<Dialog>(null);
     const [flash, setFlash] = useState("");
     const { profile, linked } = state;
     const cert = certification(state);
     const palier = Math.min(5, 1 + Math.floor(state.points / 500));
-    const flashKey = state.settings.flash;
+    const message = flash || saved;
 
-    useEffect(() => {
-        if (typeof flashKey !== "string" || !flashKey) return;
-        setFlash(flashKey);
-        update(setSetting("flash", ""));
-    }, [flashKey, update]);
+    // Message laissé par l'écran précédent (profil enregistré…), effacé en quittant la page
+    useEffect(() => () => setSaved(""), [setSaved]);
 
-    const setLinked = (id: keyof typeof linked, value: boolean) => {
-        update((s) => ({ ...s, linked: { ...s.linked, [id]: value } }));
-        setFlash(`${SERVICES[id]} ${value ? "lié" : "délié"}.`);
-    };
-    const leave = () => {
-        reset();
-        router.replace("/");
+    const setLinked = async (id: keyof typeof linked, value: boolean) => {
+        const result = await linkAccount(id, value);
+        setFlash(result?.ok ? `${SERVICES[id]} ${value ? "lié" : "délié"}.` : (result?.error ?? ""));
     };
 
     const checks = [
@@ -62,18 +58,20 @@ export default function AccountView() {
     const dialogs = {
         blablacar: { title: "Délier BlaBlaCar ?", text: "Tu pourras le lier de nouveau à tout moment.", confirm: "Délier", run: () => setLinked("blablacar", false) },
         lunii: { title: "Délier Lunii ?", text: "Tu pourras le lier de nouveau à tout moment.", confirm: "Délier", run: () => setLinked("lunii", false) },
-        logout: { title: "Se déconnecter ?", text: "Ta session sera fermée et les données de cet appareil effacées.", confirm: "Se déconnecter", run: leave },
-        delete: { title: "Supprimer ton compte ?", text: "Tes anecdotes, points et trajets seront définitivement supprimés. Cette action est irréversible.", confirm: "Supprimer", run: leave },
+        logout: { title: "Se déconnecter ?", text: "Ta session sera fermée sur cet appareil.", confirm: "Se déconnecter", run: () => logout() },
+        delete: { title: "Supprimer ton compte ?", text: "Tes anecdotes, points et trajets seront définitivement supprimés. Cette action est irréversible.", confirm: "Supprimer", run: () => deleteAccount() },
     };
     const current = dialog ? dialogs[dialog] : null;
 
     return (
         <>
-            {flash && <p className={styles.flash} role="status">{flash}</p>}
+            {message && <p className={styles.flash} role="status">{message}</p>}
 
             <section className={styles.profile}>
                 <Link href="/compte/profil" transitionTypes={["nav-forward"]} className={styles.card}>
-                    <span className={styles.avatar}>{profile.firstName.charAt(0).toUpperCase() || "?"}</span>
+                    <span className={styles.avatar}>
+                        {profile.photo ? <Image src={profile.photo} alt="" width={64} height={64} /> : profile.firstName.charAt(0).toUpperCase() || "?"}
+                    </span>
                     <span className={styles.identity}>
                         <span className={styles.name}>{profile.firstName} {profile.lastName}</span>
                         <span className={styles.email}>{profile.email}</span>
@@ -85,6 +83,7 @@ export default function AccountView() {
                     </span>
                     <ChevronRight size={20} />
                 </Link>
+                <Image src="/images/mascottes/cadeau-compte.webp" alt="" width={231} height={218} className={styles.mascot} priority />
             </section>
 
             <section className={styles.section}>
@@ -96,6 +95,11 @@ export default function AccountView() {
                 </div>
             </section>
 
+            <section className={styles.section}>
+                <SectionTitle title="Mes badges" subtitle="Un badge par collection de région complète, visible sur ton profil public." link={{ label: "Collections", href: "/histoires/boutique" }} />
+                {state.badges.length ? <Badges regionSlugs={state.badges} /> : <p className={styles.email}>Achète la collection d’une région pour gagner son badge.</p>}
+            </section>
+
             <section id="comptes-lies" className={styles.sectionTight}>
                 <SectionTitle title="Comptes liés" subtitle="Au moins un compte doit rester lié pour utiliser Bluni." />
                 <ul>
@@ -103,6 +107,7 @@ export default function AccountView() {
                         <LinkedAccountRow
                             key={id}
                             service={SERVICES[id]}
+                            logo={`/images/logos/compte-${id}.webp`}
                             linked={linked[id]}
                             status={linked[id] ? `Lié · ${profile.email}` : id === "lunii" ? "Non lié · pour retrouver tes histoires sur ta conteuse" : "Non lié · pour réserver des trajets"}
                             canUnlink={linked.blablacar && linked.lunii}
@@ -130,6 +135,7 @@ export default function AccountView() {
                         </li>
                     ))}
                 </ul>
+                <PackageCta variant="card" />
             </section>
 
             <section className={styles.sectionTight}>
@@ -145,7 +151,7 @@ export default function AccountView() {
                                     type="button"
                                     aria-pressed={profile.role === r.id}
                                     className={styles.segmentButton}
-                                    onClick={() => update((s) => ({ ...s, profile: { ...s.profile, role: r.id } }))}
+                                    onClick={() => setRole(r.id)}
                                 >
                                     {r.label}
                                 </button>
@@ -159,13 +165,13 @@ export default function AccountView() {
                     title="Notifications"
                     subtitle="Suivi de tes anecdotes et rappels de trajet"
                     href="/compte/notifications"
-                    toggle={{ checked: flag(state, "notifications"), onChange: (v) => update(setSetting("notifications", v)) }}
+                    toggle={{ checked: flag(state, "notifications"), onChange: (v) => saveSetting("notifications", v) }}
                 />
                 <SettingRow
                     icon={Mic}
                     title="Consentement à l’enregistrement"
                     subtitle="Demander l’accord des passagers avant chaque enregistrement"
-                    toggle={{ checked: flag(state, "consentement"), onChange: (v) => update(setSetting("consentement", v)) }}
+                    toggle={{ checked: flag(state, "consentement"), onChange: (v) => saveSetting("consentement", v) }}
                 />
                 <SettingRow icon={ShieldCheck} title="Confidentialité et données" subtitle="Enregistrements, droits cédés, données personnelles" href="/compte/confidentialite" />
                 <SettingRow icon={Contrast} title="Apparence" href="/compte/apparence" value={<span className={styles.value}>{APPARENCES[choice(state, "apparence", "auto")]}</span>} />

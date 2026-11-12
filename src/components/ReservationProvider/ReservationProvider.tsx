@@ -14,7 +14,7 @@ type Reservation = {
     addCard: (card: Card) => void;
 }
 
-const initial: Booking = { allerId: null, retourId: null, pack: true, usePoints: true, promo: null, method: "card-4242", passengers: PASSENGERS };
+const initial: Booking = { aller: null, retour: null, pack: true, useVoucher: true, promo: null, method: "card-4242", passengers: PASSENGERS };
 const initialCards: Card[] = [{ id: "card-4242", last4: "4242", expiry: "09/28" }];
 
 const Context = createContext<Reservation | null>(null);
@@ -46,7 +46,7 @@ export function useReservation() {
 export function useReservationGuard() {
     const ctx = useReservation();
     const router = useRouter();
-    const missing = !ctx.booking.allerId;
+    const missing = !ctx.booking.aller;
 
     useEffect(() => {
         if (missing) router.replace("/trajets/resultats");

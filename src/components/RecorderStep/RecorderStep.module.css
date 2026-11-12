@@ -66,7 +66,7 @@
     animation: blink 1.2s ease-in-out infinite;
 }
 
-.statusPaused .dot {
+.statusIdle .dot {
     animation: none;
     background: var(--jaune-fonce);
 }
@@ -124,6 +124,7 @@
     height: 84px;
     border: 8px solid var(--violet-doux);
     border-radius: 42px;
+    color: var(--fond);
     background: var(--violet);
     cursor: pointer;
 }
@@ -133,6 +134,12 @@
     height: 26px;
     border-radius: 6px;
     background: var(--fond);
+}
+
+.side:disabled,
+.stop:disabled {
+    opacity: 0.4;
+    cursor: default;
 }
 
 .hint,

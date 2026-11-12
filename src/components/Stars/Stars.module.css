@@ -1,0 +1,13 @@
+.root {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.full {
+    color: var(--jaune);
+    fill: var(--jaune);
+}
+
+.empty {
+    color: var(--bordure);
+}

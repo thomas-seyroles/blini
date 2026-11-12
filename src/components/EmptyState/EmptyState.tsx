@@ -11,7 +11,7 @@ type EmptyStateProps = {
 export default function EmptyState({ title, text, action }: EmptyStateProps) {
     return (
         <section className={styles.root}>
-            <Image src="/images/mascotte-triste.png" alt="" width={66} height={76} />
+            <Image src="/images/mascottes/triste.webp" alt="" width={66} height={76} />
             <h2 className={styles.title}>{title}</h2>
             <p className={styles.text}>{text}</p>
             {action && <Button label={action.label} link={action.href} type="primary" />}

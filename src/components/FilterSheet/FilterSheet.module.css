@@ -146,36 +146,6 @@
     }
 }
 
-/* En-tête */
-.header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-}
-
-.title {
-    font-size: 24px;
-    font-weight: 900;
-}
-
-.subtitle {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--texte-secondaire);
-}
-
-.close {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border: 0;
-    border-radius: 17px;
-    background: var(--jaune-doux);
-}
-
 /* Groupes */
 .group {
     display: flex;
@@ -192,6 +162,19 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+.slots {
+    flex-wrap: nowrap;
+    gap: 6px;
+}
+
+.slots .chip {
+    flex: 1;
+    padding-inline: 2px;
+    font-size: 12px;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .chip {

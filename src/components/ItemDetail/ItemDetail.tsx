@@ -8,21 +8,24 @@ import Button from "@/components/Button/Button";
 import ConfirmDialog from "@/components/ConfirmDialog/ConfirmDialog";
 import flow from "@/components/FlowPage/FlowPage.module.css";
 import { categoryLabels, fmt, type Item } from "@/lib/items";
+import { exchangeItem } from "@/server/actions/items";
 import styles from "./ItemDetail.module.css";
 
 export default function ItemDetail({ item }: { item: Item }) {
-    const { state, spendPoints, update } = useApp();
+    const { state } = useApp();
     const [confirming, setConfirming] = useState(false);
     const [done, setDone] = useState(false);
+    const [error, setError] = useState("");
 
     const owned = state.inventory.includes(item.id);
     const missing = item.cost - state.points;
 
-    const exchange = () => {
+    const exchange = async () => {
         setConfirming(false);
-        if (owned || !spendPoints(item.cost)) return;
-        update((s) => (s.inventory.includes(item.id) ? s : { ...s, inventory: [...s.inventory, item.id] }));
-        setDone(true);
+        if (owned) return;
+        const result = await exchangeItem(item.id);
+        if (result.ok) setDone(true);
+        else setError(result.error ?? "L’échange n’a pas abouti.");
     };
 
     return (
@@ -42,7 +45,7 @@ export default function ItemDetail({ item }: { item: Item }) {
                     <dt>Coût</dt>
                     <dd className={styles.cost}>
                         {fmt(item.cost)} pts
-                        <Image src="/images/cadeaux/points18.svg" alt="" width={18} height={18} />
+                        <Image src="/images/icones/points.svg" alt="" width={18} height={18} />
                     </dd>
                 </div>
                 <div>
@@ -57,6 +60,8 @@ export default function ItemDetail({ item }: { item: Item }) {
                     Échange réussi : « {item.title} » est dans ta collection. Il te reste {fmt(state.points)} pts.
                 </p>
             )}
+
+            {error && <p className={flow.error} role="alert">{error}</p>}
 
             {owned ? (
                 <>

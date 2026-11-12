@@ -4,8 +4,9 @@ import { useEffect, useState, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpDown, Calendar, Car, Plus, Users } from "lucide-react";
 import { placesLabel } from "@/lib/journeys";
-import { dateOf, formatDay, guestsSummary, isoOf } from "@/lib/trip";
-import { publishedTrip, tripHref, type BookedTrip } from "@/lib/trips";
+import { dateOf, dayInfo, formatDay, guestsSummary, isoOf } from "@/lib/trip";
+import { setRole } from "@/server/actions/account";
+import { publishJourney } from "@/server/actions/trips";
 import { useSearch } from "@/lib/useSearch";
 import { useApp } from "../AppState/AppState";
 import Button from "../Button/Button";
@@ -21,33 +22,41 @@ type Field = "from" | "to" | "aller" | "retour" | "passengers";
 
 export default function SearchForm() {
     const router = useRouter();
-    const { state, update, addTrip } = useApp();
+    const { state } = useApp();
     const { criteria, setCriteria } = useSearch();
     const role = state.profile.role;
     const { from, to, guests } = criteria;
     const aller = dateOf(criteria.aller);
     const retour = criteria.retour ? dateOf(criteria.retour) : null;
     const [open, setOpen] = useState<Field | null>(null);
-    const [published, setPublished] = useState<BookedTrip | null>(null);
-    const close = () => setOpen(null);
+    const [published, setPublished] = useState<{ id: string; text: string } | null>(null);
+    const [error, setError] = useState("");
+    const [chain, setChain] = useState(false);
+    const close = () => { setOpen(null); setChain(false); };
     const focus = open ?? "aller";
     const missing = !from ? "from" : !to ? "to" : null;
 
     useEffect(() => {
         if (!open) return;
-        const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
+        const onKey = (e: KeyboardEvent) => e.key === "Escape" && (setOpen(null), setChain(false));
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
     }, [open]);
 
-    const submit = (e: MouseEvent<HTMLElement>) => {
+    const submit = async (e: MouseEvent<HTMLElement>) => {
+        setError("");
         if (missing) {
             e.preventDefault();
+            setChain(true);
             setOpen(missing);
         } else if (role === "conducteur") {
-            const trip = publishedTrip(criteria, state.profile.firstName);
-            addTrip(trip);
-            setPublished(trip);
+            const result = await publishJourney({ from, to, date: criteria.aller, places: guests.places });
+            if (!result.ok) return setError(result.error ?? "Publication impossible.");
+            const day = dayInfo(criteria.aller);
+            setPublished({
+                id: result.id,
+                text: `${result.from} → ${result.to} · ${day.short} ${day.date} à ${result.time} · ${placesLabel(guests.places)}. Les passagers peuvent maintenant te demander une place.`,
+            });
         }
     };
 
@@ -96,12 +105,12 @@ export default function SearchForm() {
                 {open && <button type="button" className={styles.backdrop} onClick={close} aria-label="Fermer" tabIndex={-1} />}
                 {open === "from" && (
                     <div className={`${styles.popup} ${styles.popFrom}`}>
-                        <PlaceModule title="Où partez-vous ?" value={from} onValidate={(v) => { setCriteria({ from: v }); close(); }} onClose={close} />
+                        <PlaceModule title="D’où partez-vous ?" placeholder="D’où partez-vous ?" value={from} onValidate={(v) => { setCriteria({ from: v }); if (chain && v && !to) setOpen("to"); else close(); }} onClose={close} />
                     </div>
                 )}
                 {open === "to" && (
                     <div className={`${styles.popup} ${styles.popTo}`}>
-                        <PlaceModule title="Où allez-vous ?" value={to} onValidate={(v) => { setCriteria({ to: v }); close(); }} onClose={close} />
+                        <PlaceModule title="Où allez-vous ?" placeholder="Où allez-vous ?" value={to} onValidate={(v) => { setCriteria({ to: v }); close(); }} onClose={close} />
                     </div>
                 )}
                 {(open === "aller" || open === "retour") && (
@@ -132,19 +141,20 @@ export default function SearchForm() {
                 <Button
                     label={role === "passager" ? "Je conduis · Proposer un trajet" : "Je voyage en passager"}
                     icon={role === "passager" ? Car : Users}
-                    onClick={() => update((s) => ({ ...s, profile: { ...s.profile, role: role === "passager" ? "conducteur" : "passager" } }))}
+                    onClick={() => setRole(role === "passager" ? "conducteur" : "passager")}
                     type="secondary"
                 />
             </div>
+            {error && <p className={styles.error} role="alert">{error}</p>}
             <ConfirmDialog
                 open={!!published}
                 title="Trajet publié !"
-                text={published ? `${published.from} → ${published.to} · ${published.day} à ${published.time} · ${placesLabel(published.places ?? 0)}. Les passagers peuvent maintenant te demander une place.` : ""}
+                text={published?.text ?? ""}
                 confirmLabel="Voir le trajet"
                 cancelLabel="Rester ici"
                 onConfirm={() => {
                     if (!published) return;
-                    const href = tripHref(published);
+                    const href = `/trajets/mes-trajets/${published.id}`;
                     setPublished(null);
                     router.push(href, { transitionTypes: ["nav-forward"] });
                 }}

@@ -4,23 +4,25 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ImagePlus, MapPin, X } from "lucide-react";
-import { regions } from "@/lib/stories";
+import { useCatalog } from "../AppState/AppState";
 import AudioPlayerMini from "../AudioPlayerMini/AudioPlayerMini";
 import Button from "../Button/Button";
 import Field from "../Field/Field";
 import FlowHeader from "../FlowHeader/FlowHeader";
 import FlowPage from "../FlowPage/FlowPage";
-import { usePhotoUrl, useRaconterGuard } from "../RaconterProvider/RaconterProvider";
+import { useObjectUrl, useRaconterGuard } from "../RaconterProvider/RaconterProvider";
 import styles from "./ContextStep.module.css";
 
 const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 export default function ContextStep() {
     const ctx = useRaconterGuard("contexte");
+    const { regions } = useCatalog();
     const router = useRouter();
     const fileRef = useRef<HTMLInputElement>(null);
     const [errors, setErrors] = useState<{ title?: string; place?: string }>({});
-    const preview = usePhotoUrl(ctx?.draft.photo ?? null);
+    const preview = useObjectUrl(ctx?.draft.photo ?? null);
+    const audio = useObjectUrl(ctx?.draft.audio ?? null);
     if (!ctx) return null;
 
     const { draft, patch } = ctx;
@@ -48,7 +50,7 @@ export default function ContextStep() {
                     <p className={styles.text}>Ces infos aident l’équipe Lunii à transformer ton anecdote en histoire.</p>
                 </div>
 
-                <AudioPlayerMini durationSec={draft.durationSec} />
+                <AudioPlayerMini durationSec={draft.durationSec} src={audio} />
 
                 <Field
                     label="Titre de ton anecdote"

@@ -4,17 +4,10 @@ import { useMemo } from "react";
 import { useApp } from "@/components/AppState/AppState";
 import { parseCriteria, type Criteria } from "./search";
 
-// Critères de recherche conservés dans state.settings.search (chaîne JSON)
+// Critères de recherche conservés sur l'appareil (chaîne JSON)
 export function useSearch() {
-    const { state, update, hydrated } = useApp();
-    const raw = state.settings.search;
-    const criteria = useMemo(() => parseCriteria(raw), [raw]);
-
-    const setCriteria = (patch: Partial<Criteria>) =>
-        update((s) => ({
-            ...s,
-            settings: { ...s.settings, search: JSON.stringify({ ...parseCriteria(s.settings.search), ...patch }) },
-        }));
-
+    const { search, setSearch, hydrated } = useApp();
+    const criteria = useMemo(() => parseCriteria(search), [search]);
+    const setCriteria = (patch: Partial<Criteria>) => setSearch(JSON.stringify({ ...criteria, ...patch }));
     return { criteria, setCriteria, hydrated };
 }

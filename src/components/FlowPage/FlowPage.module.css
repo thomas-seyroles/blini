@@ -46,3 +46,10 @@
     font-weight: 800;
     color: var(--violet);
 }
+
+.error {
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--erreur);
+}

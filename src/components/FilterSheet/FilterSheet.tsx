@@ -2,20 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Sparkle from "@/components/Sparkle/Sparkle";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { PRICE_MAX, PRICE_MIN, activeCount, defaultFilters, slots, sorts, type Filters } from "@/lib/filters";
 import styles from "./FilterSheet.module.css";
 
 gsap.registerPlugin(useGSAP);
 
-const dir = "/images/filtres";
+const dir = "/images/decors";
 
 const options = [
     { id: "certifies", label: "Certifiés Bluni", hint: "Profils vérifiés, règlement accepté" },
     { id: "casque", label: "Casque Lunii à bord", hint: "Prêté par le conducteur" },
-    { id: "siege", label: "Siège enfant", hint: "Disponible sur demande" },
 ] as const;
 
 type FilterSheetProps = {
@@ -27,7 +27,6 @@ type FilterSheetProps = {
 export default function FilterSheet({ filters, onChange: setFilters, count: results }: FilterSheetProps) {
     const [open, setOpen] = useState(false);
     const root = useRef<HTMLDivElement>(null);
-    const closeButton = useRef<HTMLButtonElement>(null);
     const timeline = useRef<gsap.core.Timeline | null>(null);
 
     const count = activeCount(filters);
@@ -54,7 +53,6 @@ export default function FilterSheet({ filters, onChange: setFilters, count: resu
             return;
         }
         tl.timeScale(reduced ? 50 : 1).play();
-        closeButton.current?.focus();
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
         window.addEventListener("keydown", onKey);
         document.body.style.overflow = "hidden";
@@ -75,23 +73,13 @@ export default function FilterSheet({ filters, onChange: setFilters, count: resu
             <div ref={root} className={styles.root} data-open={open || undefined} inert={!open}>
                 <button type="button" data-veil className={styles.veil} onClick={close} aria-label="Fermer les filtres" tabIndex={-1} />
                 <div data-panel className={styles.panel}>
-                    <Image data-mascot className={styles.mascot} src="/images/mascotte-casque.png" alt="" width={106} height={116} />
-                    <Image data-sparkle className={styles.sparkleLarge} src={`${dir}/etincelle-grande.svg`} alt="" width={36} height={36} />
-                    <Image data-sparkle className={styles.sparkleMedium} src={`${dir}/etincelle-moyenne.svg`} alt="" width={19} height={19} />
-                    <Image data-sparkle className={styles.sparkleSmall} src={`${dir}/etincelle-petite.svg`} alt="" width={12} height={12} />
+                    <Image data-mascot className={styles.mascot} src="/images/mascottes/casque.webp" alt="" width={106} height={116} />
+                    <Sparkle data-sparkle className={styles.sparkleLarge} size={36} />
+                    <Sparkle data-sparkle className={styles.sparkleMedium} size={19} />
+                    <Sparkle data-sparkle className={styles.sparkleSmall} size={12} />
 
                     <div className={styles.sheet} role="dialog" aria-modal="true" aria-label="Filtres">
                         <span className={styles.handle} />
-                        <div className={styles.header}>
-                            <div>
-                                <h2 className={styles.title}>Filtres</h2>
-                                <p className={styles.subtitle}>Trouve le trajet qui te ressemble</p>
-                            </div>
-                            <button ref={closeButton} type="button" className={styles.close} onClick={close} aria-label="Fermer">
-                                <X size={14} />
-                            </button>
-                        </div>
-
                         <section className={styles.group}>
                             <h3 className={styles.label}>Trier par</h3>
                             <div className={styles.chips}>
@@ -131,7 +119,7 @@ export default function FilterSheet({ filters, onChange: setFilters, count: resu
 
                         <section className={styles.group}>
                             <h3 className={styles.label}>Heure de départ</h3>
-                            <div className={styles.chips}>
+                            <div className={`${styles.chips} ${styles.slots}`}>
                                 {slots.map(({ id, label }) => (
                                     <button
                                         key={id}
@@ -168,7 +156,7 @@ export default function FilterSheet({ filters, onChange: setFilters, count: resu
                         </section>
 
                         <div className={styles.actions}>
-                            <button type="button" className={styles.clear} onClick={() => setFilters(defaultFilters)}>Tout effacer</button>
+                            <button type="button" className={styles.clear} onClick={() => { setFilters(defaultFilters); close(); }}>Tout effacer</button>
                             <button type="button" className={styles.apply} onClick={close}>Voir {results} trajet{results > 1 ? "s" : ""}</button>
                         </div>
                     </div>

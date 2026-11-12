@@ -12,12 +12,13 @@ const API = "https://api-adresse.data.gouv.fr/search/";
 
 type PlaceModuleProps = {
     title: string;
+    placeholder: string;
     value: string;
     onValidate: (place: string) => void;
     onClose: () => void;
 }
 
-export default function PlaceModule({ title, value, onValidate, onClose }: PlaceModuleProps) {
+export default function PlaceModule({ title, placeholder, value, onValidate, onClose }: PlaceModuleProps) {
     const [query, setQuery] = useState(value);
     const [selected, setSelected] = useState(value);
     const [matches, setMatches] = useState<Place[]>(value ? [{ name: value, detail: "" }] : []);
@@ -26,12 +27,7 @@ export default function PlaceModule({ title, value, onValidate, onClose }: Place
     useEffect(() => {
         const q = query.trim();
         if (q === selected) return;
-        if (q.length < 3) {
-            setMatches([]);
-            setStatus("idle");
-            return;
-        }
-        setStatus("loading");
+        if (q.length < 3) return;
         const controller = new AbortController();
         const timer = setTimeout(async () => {
             try {
@@ -50,6 +46,15 @@ export default function PlaceModule({ title, value, onValidate, onClose }: Place
         };
     }, [query, selected]);
 
+    const onInput = (v: string) => {
+        setQuery(v);
+        setSelected("");
+        if (v.trim().length < 3) {
+            setMatches([]);
+            setStatus("idle");
+        } else setStatus("loading");
+    };
+
     const message = {
         idle: "Saisissez au moins 3 caractères",
         loading: "Recherche en cours…",
@@ -64,8 +69,8 @@ export default function PlaceModule({ title, value, onValidate, onClose }: Place
                 <input
                     autoFocus
                     value={query}
-                    onChange={(e) => { setQuery(e.target.value); setSelected(""); }}
-                    placeholder="Ville, gare ou adresse"
+                    onChange={(e) => onInput(e.target.value)}
+                    placeholder={placeholder}
                     aria-label={title}
                 />
             </div>

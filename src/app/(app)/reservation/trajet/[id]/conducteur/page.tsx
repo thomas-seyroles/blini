@@ -5,7 +5,8 @@ import Stars from "@/components/Stars/Stars";
 import EquipmentTags from "@/components/EquipmentTags/EquipmentTags";
 import FlowHeader from "@/components/FlowHeader/FlowHeader";
 import FlowPage from "@/components/FlowPage/FlowPage";
-import { getDriverReviews, getJourney } from "@/server/queries/journeys";
+import Badges from "@/components/Badges/Badges";
+import { getDriverBadges, getDriverReviews, getJourney } from "@/server/queries/journeys";
 import styles from "./page.module.css";
 
 // Données vivantes (places, comptes) : rendu à la demande, sans validation de navigation instantanée
@@ -17,7 +18,7 @@ export default async function DriverProfile({ params }: PageProps<"/reservation/
   if (!journey || journey.kind === "complet") notFound();
 
   const { driver } = journey;
-  const reviews = await getDriverReviews(driver.id);
+  const [reviews, badges] = await Promise.all([getDriverReviews(driver.id), getDriverBadges(driver.id)]);
 
   return (
     <FlowPage>
@@ -35,6 +36,13 @@ export default async function DriverProfile({ params }: PageProps<"/reservation/
 
       {driver.bio && <p className={styles.bio}>{driver.bio}</p>}
       <EquipmentTags equipments={driver.equipments} />
+
+      {badges.length > 0 && (
+        <>
+          <h2 className={styles.heading}>Badges de région</h2>
+          <Badges regionSlugs={badges} />
+        </>
+      )}
 
       {reviews.length > 0 && (
         <>

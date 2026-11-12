@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, ShieldCheck, Sparkles, Star } from "lucide-react";
+import { BookOpen, ChevronRight, ShieldCheck, Star } from "lucide-react";
 import AboardList from "@/components/AboardList/AboardList";
 import Cover from "@/components/Cover/Cover";
 import EquipmentTags from "@/components/EquipmentTags/EquipmentTags";
 import FlowHeader from "@/components/FlowHeader/FlowHeader";
 import FlowPage from "@/components/FlowPage/FlowPage";
 import ItineraryCard from "@/components/ItineraryCard/ItineraryCard";
+import RegionStoryLink from "@/components/RegionStoryLink/RegionStoryLink";
 import ReserveBar from "@/components/ReserveBar/ReserveBar";
 import { placesLabel } from "@/lib/journeys";
 import { dayInfo } from "@/lib/trip";
@@ -71,14 +72,16 @@ export default async function JourneyDetail({ params }: PageProps<"/reservation/
 
       <section className={styles.stories}>
         <h2 className={styles.storiesTitle}>
-          <Sparkles size={16} />
+          <BookOpen size={16} />
           {regions.length} histoire{regions.length > 1 ? "s" : ""} sur ta route
         </h2>
         <ul className={styles.regions}>
           {regions.map(({ slug, name }) => (
-            <li key={slug} className={styles.region}>
-              <Cover regionSlug={slug} className={styles.cover} sizes="130px" />
-              {name}
+            <li key={slug} className={styles.regionItem}>
+              <RegionStoryLink slug={slug} className={styles.region}>
+                <Cover regionSlug={slug} className={styles.cover} sizes="130px" />
+                {name}
+              </RegionStoryLink>
             </li>
           ))}
         </ul>

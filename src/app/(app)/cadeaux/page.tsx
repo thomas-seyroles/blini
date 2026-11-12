@@ -1,5 +1,6 @@
 import GiftCarousel from "@/components/GiftCarousel/GiftCarousel";
 import ItemShop from "@/components/ItemShop/ItemShop";
+import PackageCta from "@/components/PackageCta/PackageCta";
 import PageTransition from "@/components/PageTransition/PageTransition";
 import PointsCard from "@/components/PointsCard/PointsCard";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
@@ -12,6 +13,7 @@ export default function Page() {
       <main className={styles.page}>
         <TabHeader title="Tes cadeaux" />
         <PointsCard />
+        <PackageCta variant="banner" />
         <section className={styles.section}>
           <SectionTitle title="Mes histoires offertes" link={{ label: "Ma collection", href: "/cadeaux/collection" }} />
           <GiftCarousel />

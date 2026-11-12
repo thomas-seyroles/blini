@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import Sparkle from "@/components/Sparkle/Sparkle";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
@@ -14,7 +15,7 @@ import flow from "@/components/FlowPage/FlowPage.module.css";
 import { duration, price } from "@/lib/stories";
 import styles from "./panier.module.css";
 
-const dir = "/images/confirmation";
+const dir = "/images/decors";
 
 export default function CartConfirmation() {
     const router = useRouter();
@@ -41,11 +42,11 @@ export default function CartConfirmation() {
 
             <div className={styles.illustration}>
                 <Image className={styles.halo} src={`${dir}/halo.svg`} alt="" width={170} height={170} />
-                <Image className={styles.mascot} src="/images/mascotte-casque.png" alt="" width={137} height={150} priority />
-                <Image className={`${styles.spark} ${styles.sparkA}`} src={`${dir}/etincelle-jaune-grande.svg`} alt="" width={20} height={20} />
-                <Image className={`${styles.spark} ${styles.sparkB}`} src={`${dir}/etincelle-violette-moyenne.svg`} alt="" width={14} height={14} />
-                <Image className={`${styles.spark} ${styles.sparkC}`} src={`${dir}/etincelle-jaune-petite.svg`} alt="" width={12} height={12} />
-                <Image className={`${styles.spark} ${styles.sparkD}`} src={`${dir}/etincelle-violette-petite.svg`} alt="" width={12} height={12} />
+                <Image className={styles.mascot} src="/images/mascottes/casque.webp" alt="" width={137} height={150} priority />
+                <Sparkle className={`${styles.spark} ${styles.sparkA}`} size={20} />
+                <Sparkle className={`${styles.spark} ${styles.sparkB}`} size={14} violet />
+                <Sparkle className={`${styles.spark} ${styles.sparkC}`} size={12} />
+                <Sparkle className={`${styles.spark} ${styles.sparkD}`} size={12} violet />
             </div>
 
             <div className={styles.title}>

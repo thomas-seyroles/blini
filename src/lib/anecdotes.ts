@@ -1,3 +1,5 @@
+import { POINTS } from "./points";
+
 export const STATUSES = ["Envoyée", "En écoute", "Retenue", "En écriture", "Publiée"] as const;
 
 export type Anecdote = {
@@ -5,6 +7,7 @@ export type Anecdote = {
     title: string;
     place: string;
     audioSec: number;
+    audioUrl?: string;
     hasPhoto: boolean;
     photoUrl?: string;
     details: string;
@@ -13,13 +16,11 @@ export type Anecdote = {
     sentAt: string;
     validated: boolean;
     tripLabel: string;
+    companions: Companion[];
 };
 
-export const seedAnecdotes: Anecdote[] = [
-    { id: "an-1", title: "La boulangerie de Saulieu", place: "Saulieu · Bourgogne-Franche-Comté", audioSec: 84, hasPhoto: false, details: "", status: 1, points: 20, sentAt: "2 nov.", validated: true, tripLabel: "Paris → Lyon" },
-    { id: "an-2", title: "Le pont qui chantait sous la pluie", place: "Côte-d’Or · Bourgogne-Franche-Comté", audioSec: 125, hasPhoto: true, details: "Un pont de pierre qui sonne comme une flûte quand il pleut.", status: 2, points: 120, sentAt: "28 oct.", validated: true, tripLabel: "Dijon → Paris" },
-    { id: "an-3", title: "Le clocher de Semur-en-Auxois", place: "Semur-en-Auxois · Bourgogne-Franche-Comté", audioSec: 96, hasPhoto: false, details: "", status: 0, points: 20, sentAt: "Aujourd’hui", validated: false, tripLabel: "Paris → Lyon" },
-];
+// Personnes du trajet qui doivent consentir à l'enregistrement
+export type Companion = { name: string; driver: boolean };
 
 export const minSec = (sec: number) => `${Math.floor(sec / 60)} min ${String(sec % 60).padStart(2, "0")}`;
 export const clock = (sec: number) => `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(Math.floor(sec) % 60).padStart(2, "0")}`;
@@ -34,7 +35,7 @@ export function detailSteps(a: Anecdote): DetailStep[] {
         ["Enregistrée", `${a.sentAt} · ${a.tripLabel}`, "À l’instant", true],
         ["Validée par les passagers", "Fin du trajet", "À la fin du trajet", a.validated],
         ["En écoute", "Par l’équipe Lunii", "Par l’équipe Lunii", a.status >= 1],
-        ["Retenue", "+300 pts gagnés", "Si l’équipe Lunii retient ton récit", a.status >= 2],
+        ["Retenue", `+${POINTS.retenue} pts gagnés`, "Si l’équipe Lunii retient ton récit", a.status >= 2],
         ["En écriture", "Les auteurs Lunii en font une histoire", "Les auteurs Lunii en font une histoire", a.status >= 3],
         ["Publiée", "Disponible dans la bibliothèque", "Elle te sera offerte", a.status >= 4],
     ];
@@ -49,8 +50,8 @@ export function detailSteps(a: Anecdote): DetailStep[] {
     });
 }
 
-// Réduit la photo pour tenir dans le localStorage
-export function shrinkPhoto(file: File, max = 480): Promise<string | undefined> {
+// Réduit la photo avant envoi au serveur
+export function shrinkPhoto(file: File, max = 960): Promise<Blob | undefined> {
     return new Promise((resolve) => {
         const url = URL.createObjectURL(file);
         const img = new Image();
@@ -61,7 +62,7 @@ export function shrinkPhoto(file: File, max = 480): Promise<string | undefined> 
             canvas.height = Math.round(img.height * k);
             canvas.getContext("2d")?.drawImage(img, 0, 0, canvas.width, canvas.height);
             URL.revokeObjectURL(url);
-            resolve(canvas.toDataURL("image/jpeg", 0.7));
+            canvas.toBlob((blob) => resolve(blob ?? undefined), "image/jpeg", 0.8);
         };
         img.onerror = () => {
             URL.revokeObjectURL(url);

@@ -1,0 +1,30 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.trip {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.summary {
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.error {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--erreur);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}

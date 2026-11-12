@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
-import { dayLine, driverById, eur, placesFor, placesLabel, type Journey } from "@/lib/journeys";
+import { dayLine, eur, placesFor, placesLabel, type Journey } from "@/lib/journeys";
 import { PACK_PRICE, SERVICE_FEE, quote } from "@/lib/quote";
 import Button from "../Button/Button";
 import CheckOption from "../CheckOption/CheckOption";
@@ -20,7 +20,7 @@ const commitments = [
 ];
 
 function Leg({ label, journey, passengers }: { label: string; journey: Journey; passengers: number }) {
-    const driver = driverById(journey.driverId);
+    const { driver } = journey;
     const places = placesFor(journey, passengers);
     return (
         <li className={styles.leg}>

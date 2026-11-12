@@ -1,0 +1,149 @@
+.offer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+}
+
+.hint {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 17px;
+    color: var(--texte-secondaire);
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+}
+
+.conteuse {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    border: 2px solid var(--bordure);
+    border-radius: var(--rayon);
+    text-align: left;
+    background: var(--fond);
+}
+
+.selected {
+    border-color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.badge {
+    align-self: flex-start;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--jaune);
+}
+
+.conteuseTitle {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.prices {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 18px;
+}
+
+.prices s {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--texte-secondaire);
+}
+
+.radio {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--violet);
+    border-radius: 50%;
+    color: var(--fond);
+}
+
+.selected .radio {
+    background: var(--violet);
+}
+
+.lines {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.lines li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.lines li > svg {
+    flex-shrink: 0;
+    color: var(--violet);
+}
+
+.recap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.recap li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.recap svg {
+    flex-shrink: 0;
+    color: var(--violet);
+}
+
+.top {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--fond-secondaire);
+}
+
+.mascot {
+    align-self: center;
+}
+
+.title {
+    font-family: var(--font-titre);
+    font-size: 26px;
+    text-align: center;
+}

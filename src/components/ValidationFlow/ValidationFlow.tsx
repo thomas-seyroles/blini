@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { POINTS } from "@/lib/points";
+import { validateAnecdotes } from "@/server/actions/anecdotes";
 import Link from "next/link";
 import { Check, Clock, ShieldCheck, X } from "lucide-react";
 import { clock } from "@/lib/anecdotes";
@@ -13,20 +15,17 @@ import FlowPage from "../FlowPage/FlowPage";
 import flow from "../FlowPage/FlowPage.module.css";
 import styles from "./ValidationFlow.module.css";
 
+// Consentement simulé : chaque passager du trajet est marqué accepté ou refusé à la main
 type Consent = "accepted" | "refused" | "pending";
-type Passenger = { name: string; role: string; consent: Consent };
-
-const initialPassengers: Passenger[] = [
-    { name: "Léa", role: "", consent: "accepted" },
-    { name: "Tom", role: "", consent: "accepted" },
-    { name: "Julie", role: " (conductrice)", consent: "pending" },
-];
 
 export default function ValidationFlow() {
-    const { state, hydrated, updateAnecdote, earnPoints } = useApp();
+    const { state } = useApp();
     const pending = state.anecdotes.filter((a) => a.validated === false);
     const [selected, setSelected] = useState<string[] | null>(null);
-    const [passengers, setPassengers] = useState(initialPassengers);
+    const [consents, setConsents] = useState<Record<string, Consent>>({});
+    const companions = [...new Map(pending.flatMap((a) => a.companions).map((c) => [c.name, c])).values()];
+    const passengers = companions.map((c) => ({ name: c.name, role: c.driver ? " (conducteur)" : "", consent: consents[c.name] ?? (c.driver ? "pending" : "accepted") }));
+    const driverName = companions.find((c) => c.driver)?.name;
     const [reminded, setReminded] = useState(false);
     const [sent, setSent] = useState<number | null>(null);
     const sending = useRef(false);
@@ -37,20 +36,15 @@ export default function ValidationFlow() {
     const refused = passengers.some((p) => p.consent === "refused");
     const canSend = checked.length > 0 && everyoneAccepted;
 
-    const setConsent = (name: string, consent: Consent) => setPassengers((list) => list.map((p) => (p.name === name ? { ...p, consent } : p)));
+    const setConsent = (name: string, consent: Consent) => setConsents((c) => ({ ...c, [name]: consent }));
 
-    const send = () => {
+    const send = async () => {
         if (!canSend || sending.current) return;
         sending.current = true;
         const ids = checked.filter((id) => pending.some((a) => a.id === id));
-        ids.forEach((id) => {
-            updateAnecdote(id, { validated: true, status: 1 });
-            earnPoints(50);
-        });
-        setSent(ids.length);
+        const { count } = await validateAnecdotes(ids);
+        setSent(count);
     };
-
-    if (!hydrated) return <FlowPage><span /></FlowPage>;
 
     if (sent !== null) {
         return (
@@ -58,7 +52,7 @@ export default function ValidationFlow() {
                 <div className={styles.done}>
                     <span className={styles.doneIcon}><Check size={28} strokeWidth={3} /></span>
                     <h1 className={styles.title}>{sent} anecdote{sent > 1 ? "s" : ""} envoyée{sent > 1 ? "s" : ""} !</h1>
-                    <p className={styles.text}>+{sent * 50} pts ajoutés à ton compte. Les auteurs Lunii vont les écouter.</p>
+                    <p className={styles.text}>+{sent * POINTS.validation} pts ajoutés à ton compte. Les auteurs Lunii vont les écouter.</p>
                     <Button label="Voir mes anecdotes" link="/raconter" transitionTypes={["nav-back"]} type="primary" />
                 </div>
             </FlowPage>
@@ -104,31 +98,33 @@ export default function ValidationFlow() {
                 ))}
             </section>
 
-            <section className={`${flow.box} ${flow.boxYellow} ${styles.passengers}`}>
-                {passengers.map((p) => (
-                    <div key={p.name} className={styles.row}>
-                        <span className={`${styles.avatar} ${p.role ? styles.avatarYellow : ""}`}>{p.name[0]}</span>
-                        <div className={styles.rowTexts}>
-                            <p className={styles.name}>{p.name}{p.role}</p>
-                            <p className={styles.sub}>
-                                {p.consent === "accepted" && "A validé les enregistrements"}
-                                {p.consent === "refused" && "A refusé les enregistrements"}
-                                {p.consent === "pending" && (reminded && p.role ? "Relance envoyée" : "Notification envoyée à la fin du trajet")}
-                            </p>
-                            <div className={styles.choices}>
-                                {p.consent !== "accepted" && <button type="button" className={styles.choice} onClick={() => setConsent(p.name, "accepted")}>Marquer comme accepté</button>}
-                                {p.consent !== "refused" && <button type="button" className={`${styles.choice} ${styles.refuse}`} onClick={() => setConsent(p.name, "refused")}>Marquer comme refusé</button>}
+            {passengers.length > 0 && (
+                <section className={`${flow.box} ${flow.boxYellow} ${styles.passengers}`}>
+                    {passengers.map((p) => (
+                        <div key={p.name} className={styles.row}>
+                            <span className={`${styles.avatar} ${p.role ? styles.avatarYellow : ""}`}>{p.name[0]}</span>
+                            <div className={styles.rowTexts}>
+                                <p className={styles.name}>{p.name}{p.role}</p>
+                                <p className={styles.sub}>
+                                    {p.consent === "accepted" && "A validé les enregistrements"}
+                                    {p.consent === "refused" && "A refusé les enregistrements"}
+                                    {p.consent === "pending" && (reminded && p.role ? "Relance envoyée" : "Notification envoyée à la fin du trajet")}
+                                </p>
+                                <div className={styles.choices}>
+                                    {p.consent !== "accepted" && <button type="button" className={styles.choice} onClick={() => setConsent(p.name, "accepted")}>Marquer comme accepté</button>}
+                                    {p.consent !== "refused" && <button type="button" className={`${styles.choice} ${styles.refuse}`} onClick={() => setConsent(p.name, "refused")}>Marquer comme refusé</button>}
+                                </div>
                             </div>
+                            <span className={`${styles.badge} ${p.consent === "accepted" ? styles.badgeOk : p.consent === "refused" ? styles.badgeKo : styles.badgeWait}`}>
+                                {p.consent === "accepted" && <Check size={14} />}
+                                {p.consent === "refused" && <X size={14} />}
+                                {p.consent === "pending" && <Clock size={14} />}
+                                {p.consent === "accepted" ? "Accepté" : p.consent === "refused" ? "Refusé" : "En attente"}
+                            </span>
                         </div>
-                        <span className={`${styles.badge} ${p.consent === "accepted" ? styles.badgeOk : p.consent === "refused" ? styles.badgeKo : styles.badgeWait}`}>
-                            {p.consent === "accepted" && <Check size={14} />}
-                            {p.consent === "refused" && <X size={14} />}
-                            {p.consent === "pending" && <Clock size={14} />}
-                            {p.consent === "accepted" ? "Accepté" : p.consent === "refused" ? "Refusé" : "En attente"}
-                        </span>
-                    </div>
-                ))}
-            </section>
+                    ))}
+                </section>
+            )}
 
             <section className={styles.rules}>
                 <span className={styles.rulesIcon}><ShieldCheck size={16} /></span>
@@ -148,10 +144,10 @@ export default function ValidationFlow() {
                         {refused ? "Un passager a refusé : les anecdotes ne peuvent pas être envoyées." : checked.length === 0 ? "Coche au moins une anecdote." : "Tous les passagers doivent consentir pour envoyer."}
                     </p>
                 )}
-                {passengers.some((p) => p.role && p.consent === "pending") && (
+                {driverName && passengers.some((p) => p.role && p.consent === "pending") && (
                     reminded
-                        ? <p className={styles.reminded} role="status"><Check size={16} />Relance envoyée à Julie</p>
-                        : <button type="button" className={flow.centerLink} onClick={() => setReminded(true)}>Relancer Julie</button>
+                        ? <p className={styles.reminded} role="status"><Check size={16} />Relance envoyée à {driverName}</p>
+                        : <button type="button" className={flow.centerLink} onClick={() => setReminded(true)}>Relancer {driverName}</button>
                 )}
             </div>
         </FlowPage>

@@ -3,6 +3,10 @@
     min-width: 0;
 }
 
+.wide {
+    grid-column: span 2;
+}
+
 .card {
     --turquoise-doux: #ebf9f8;
     --bleu-doux: #ebf4fd;
@@ -88,4 +92,12 @@
 .owned .action {
     color: var(--violet);
     background: var(--violet-doux);
+}
+
+.wide .visual {
+    height: 180px;
+}
+
+.wide .art {
+    height: 150px;
 }

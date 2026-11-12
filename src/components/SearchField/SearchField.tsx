@@ -17,9 +17,9 @@ export default function SearchField({ label, value, placeholder, side, active, o
             onClick={onClick}
             className={`${styles.root} ${styles[side]} ${active ? styles.active : ""}`}
         >
-            <Image className={styles.decor} src="/images/decor.svg" alt="" width={57} height={52} />
+            <Image className={styles.decor} src="/images/decors/decor.svg" alt="" width={57} height={52} />
             <div className={styles.box} />
-            <Image className={styles.pin} src="/images/pastille.svg" alt="" width={22} height={22} />
+            <Image className={styles.pin} src="/images/decors/pastille.svg" alt="" width={22} height={22} />
             <div className={styles.texts}>
                 <span className={styles.label}>{label}</span>
                 <span className={value ? styles.value : styles.placeholder}>{value || placeholder}</span>

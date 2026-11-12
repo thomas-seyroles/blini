@@ -23,7 +23,7 @@ export default function ReserveBar({ journey }: { journey: Journey }) {
                 label="Choisir ce trajet"
                 link="/reservation/retour"
                 transitionTypes={["nav-forward"]}
-                onClick={() => update({ allerId: journey.id, retourId: null, pack: true, usePoints: true, promo: null, method: "card-4242", passengers })}
+                onClick={() => update({ aller: journey, retour: null, pack: true, useVoucher: true, promo: null, method: "card-4242", passengers })}
                 type="primary"
             />
         </div>

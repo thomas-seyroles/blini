@@ -26,7 +26,7 @@
 .cover {
     flex-shrink: 0;
     width: 64px;
-    height: 64px;
+    aspect-ratio: 565 / 800;
     border-radius: 8px;
     font-size: 24px;
 }

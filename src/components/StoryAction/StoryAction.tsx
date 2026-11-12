@@ -4,22 +4,26 @@ import Link from "next/link";
 import { Check, Play, X } from "lucide-react";
 import Button from "../Button/Button";
 import { useApp } from "../AppState/AppState";
-import { packById, price, storyById } from "@/lib/stories";
+import { packPrice, price } from "@/lib/stories";
 import styles from "./StoryAction.module.css";
 
 type StoryActionProps = { kind: "story" | "pack"; id: string; large?: boolean };
 
 // Action d'achat ou d'écoute d'une histoire ou d'un pack, selon l'état du store
 export default function StoryAction({ kind, id, large }: StoryActionProps) {
-    const { state, update, addToCart, removeFromCart } = useApp();
-    const item = kind === "pack" ? packById(id) : storyById(id);
+    const { state, catalog, play, addToCart, removeFromCart } = useApp();
+    const pack = kind === "pack" ? catalog.packById(id) : undefined;
+    const item = pack ?? catalog.storyById(id);
     if (!item) return null;
 
-    const storyIds = kind === "pack" ? packById(id)!.storyIds : [id];
-    const owned = storyIds.every((s) => state.ownedStories.includes(s) || state.gifts.includes(s));
+    const ownedIds = [...state.ownedStories, ...state.gifts];
+    const storyIds = pack ? pack.storyIds : [id];
+    // Un pack est acquis une fois son badge obtenu, même si des histoires de la région étaient déjà possédées
+    const owned = pack ? state.badges.includes(pack.regionSlug) : ownedIds.includes(id);
+    const cost = pack ? packPrice(pack.regionSlug, ownedIds, catalog.stories) : item.price;
     const inCart = state.cart.some((l) => l.kind === kind && l.id === id);
     const line = { kind, id };
-    const listen = () => update((s) => ({ ...s, nowPlaying: storyIds[0] }));
+    const listen = () => play(storyIds.find((s) => ownedIds.includes(s)) ?? storyIds[0]);
     const tone = kind === "pack" ? styles.yellow : "";
 
     if (large) {
@@ -31,7 +35,7 @@ export default function StoryAction({ kind, id, large }: StoryActionProps) {
                     <Button label="Retirer du panier" onClick={() => removeFromCart(line)} type="secondary" />
                 </div>
             );
-        return <Button label={`Ajouter au panier · ${price(item.price)}`} onClick={() => addToCart(line)} type="primary" />;
+        return <Button label={`Ajouter au panier · ${price(cost)}`} onClick={() => addToCart(line)} type="primary" />;
     }
 
     if (owned)
@@ -49,8 +53,8 @@ export default function StoryAction({ kind, id, large }: StoryActionProps) {
             </button>
         );
     return (
-        <button type="button" className={`${styles.pill} ${tone}`} onClick={() => addToCart(line)} aria-label={`Ajouter au panier, ${price(item.price)}`}>
-            {price(item.price)}
+        <button type="button" className={`${styles.pill} ${tone}`} onClick={() => addToCart(line)} aria-label={`Ajouter au panier, ${price(cost)}`}>
+            {price(cost)}
         </button>
     );
 }

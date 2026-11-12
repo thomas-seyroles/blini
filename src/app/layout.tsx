@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito, Poppins } from "next/font/google";
 import localFont from "next/font/local";
-import { AppStateProvider } from "@/components/AppState/AppState";
-import AppChrome from "@/components/AppChrome/AppChrome";
 import "./globals.css";
 
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
@@ -16,12 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="fr" className={`${nunito.variable} ${poppins.variable} ${cc.variable}`}>
-      <body>
-        <AppStateProvider>
-          {children}
-          <AppChrome />
-        </AppStateProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

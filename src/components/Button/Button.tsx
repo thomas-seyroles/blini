@@ -10,9 +10,10 @@ type ButtonProps = {
     onClick?: (e: MouseEvent<HTMLElement>) => void;
     icon?: LucideIcon;
     type: "primary" | "secondary" | "accent" | "deactivated";
+    submit?: boolean;
 }
 
-export default function Button({ label, link, transitionTypes, onClick, icon: Icon, type }: ButtonProps) {
+export default function Button({ label, link, transitionTypes, onClick, icon: Icon, type, submit }: ButtonProps) {
     const className = `${styles.button} ${styles[type]}`;
     const content = (
         <>
@@ -22,5 +23,5 @@ export default function Button({ label, link, transitionTypes, onClick, icon: Ic
     );
     return link
         ? <Link href={link} transitionTypes={transitionTypes} onClick={onClick} className={className}>{content}</Link>
-        : <button type="button" onClick={onClick} disabled={type === "deactivated"} className={className}>{content}</button>;
+        : <button type={submit ? "submit" : "button"} onClick={onClick} disabled={type === "deactivated"} className={className}>{content}</button>;
 }

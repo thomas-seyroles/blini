@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useBack } from "@/lib/navHistory";
 import styles from "./FlowHeader.module.css";
 
 type FlowHeaderProps = {
@@ -7,15 +10,23 @@ type FlowHeaderProps = {
     backHref: string;
     step?: number;
     steps?: number;
+    onBack?: () => void;
 }
 
-export default function FlowHeader({ title, backHref, step, steps = 4 }: FlowHeaderProps) {
+export default function FlowHeader({ title, backHref, step, steps = 4, onBack }: FlowHeaderProps) {
+    const goBack = useBack(backHref);
     return (
         <header className={styles.root}>
             <div className={styles.bar}>
-                <Link href={backHref} transitionTypes={["nav-back"]} className={styles.back} aria-label="Retour">
-                    <ArrowLeft size={20} />
-                </Link>
+                {onBack ? (
+                    <button type="button" onClick={onBack} className={styles.back} aria-label="Retour">
+                        <ArrowLeft size={20} />
+                    </button>
+                ) : (
+                    <Link href={backHref} onClick={goBack} className={styles.back} aria-label="Retour">
+                        <ArrowLeft size={20} />
+                    </Link>
+                )}
                 <h1 className={styles.title}>{title}</h1>
                 {step && <span className={styles.step}>{step} / {steps}</span>}
             </div>

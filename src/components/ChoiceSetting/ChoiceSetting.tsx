@@ -3,7 +3,8 @@
 import { Check } from "lucide-react";
 import { useApp } from "@/components/AppState/AppState";
 import flow from "@/components/FlowPage/FlowPage.module.css";
-import { choice, setSetting } from "@/lib/account";
+import { choice } from "@/lib/account";
+import { saveSetting } from "@/server/actions/account";
 import styles from "./ChoiceSetting.module.css";
 
 type ChoiceSettingProps = {
@@ -14,7 +15,7 @@ type ChoiceSettingProps = {
 }
 
 export default function ChoiceSetting({ settingKey, fallback, options, note }: ChoiceSettingProps) {
-    const { state, update } = useApp();
+    const { state } = useApp();
     const current = choice(state, settingKey, fallback);
     return (
         <>
@@ -26,7 +27,7 @@ export default function ChoiceSetting({ settingKey, fallback, options, note }: C
                         role="radio"
                         aria-checked={current === id}
                         className={styles.option}
-                        onClick={() => update(setSetting(settingKey, id))}
+                        onClick={() => saveSetting(settingKey, id)}
                     >
                         {label}
                         {current === id && <Check size={18} />}

@@ -1,5 +1,5 @@
 import { Armchair, Headphones, MessageCircle, Music } from "lucide-react";
-import type { Equipment } from "@/lib/journeys";
+import type { Equipment } from "@/lib/enums";
 import styles from "./EquipmentTags.module.css";
 
 const tags = {

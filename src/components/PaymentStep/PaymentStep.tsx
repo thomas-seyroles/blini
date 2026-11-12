@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, Sparkles } from "lucide-react";
 import { city, eur } from "@/lib/journeys";
-import { POINTS_DISCOUNT, POINTS_USED, PROMO_DISCOUNT, quote } from "@/lib/quote";
+import { PROMO_DISCOUNT, VOUCHER_DISCOUNT, VOUCHER_ITEM_ID, canUseVoucher, quote } from "@/lib/quote";
+import { bookJourneys } from "@/server/actions/trips";
 import { useApp } from "../AppState/AppState";
 import Button from "../Button/Button";
 import FlowHeader from "../FlowHeader/FlowHeader";
@@ -17,28 +18,42 @@ import Switch from "../Switch/Switch";
 import TotalCard from "../TotalCard/TotalCard";
 import styles from "./PaymentStep.module.css";
 
-const pts = (n: number) => `${n.toLocaleString("fr-FR")} pts`;
-
 export default function PaymentStep() {
     useReservationGuard();
     const router = useRouter();
     const { booking, cards, update, addCard } = useReservation();
-    const { state } = useApp();
+    const { state, catalog } = useApp();
     const [paying, setPaying] = useState(false);
+    const [error, setError] = useState("");
 
-    const balance = state.points;
-    const enough = balance >= POINTS_USED;
+    const owned = state.inventory.includes(VOUCHER_ITEM_ID);
+    const usable = owned && canUseVoucher(booking.aller);
 
     useEffect(() => {
-        if (!enough && booking.usePoints) update({ usePoints: false });
-    }, [enough, booking.usePoints, update]);
+        if (!usable && booking.useVoucher) update({ useVoucher: false });
+    }, [usable, booking.useVoucher, update]);
 
-    const q = quote({ ...booking, usePoints: booking.usePoints && enough });
+    const q = quote({ ...booking, useVoucher: booking.useVoucher && usable });
     if (!q.aller) return null;
 
-    const pay = () => {
+    // Faux paiement : le serveur enregistre les demandes de place, sans transaction bancaire
+    const pay = async () => {
         setPaying(true);
-        setTimeout(() => router.push("/reservation/confirmation", { transitionTypes: ["nav-forward"] }), 1200);
+        setError("");
+        const result = await bookJourneys({
+            allerId: q.aller!.id,
+            retourId: q.retour?.id ?? null,
+            passengers: booking.passengers,
+            pack: booking.pack,
+            useVoucher: booking.useVoucher && usable,
+            promo: booking.promo,
+        });
+        if (!result.ok) {
+            setPaying(false);
+            setError(result.error ?? "La réservation n’a pas abouti.");
+            return;
+        }
+        router.push("/reservation/confirmation", { transitionTypes: ["nav-forward"] });
     };
 
     const roundTrip = !!q.retour;
@@ -56,14 +71,16 @@ export default function PaymentStep() {
             <section className={styles.points}>
                 <Sparkles size={22} />
                 <div className={styles.pointsTexts}>
-                    <p className={styles.methodTitle}>Utiliser {pts(POINTS_USED)}</p>
+                    <p className={styles.methodTitle}>Remise de {eur(VOUCHER_DISCOUNT)}</p>
                     <p className={styles.methodHint}>
-                        {enough
-                            ? `−${eur(POINTS_DISCOUNT)} sur ta commande · ${booking.usePoints ? `il te restera ${pts(balance - POINTS_USED)}` : `tu as ${pts(balance)}`}`
-                            : `Il te manque ${pts(POINTS_USED - balance)} pour en profiter`}
+                        {usable
+                            ? `Un bon de ton compte, −${eur(VOUCHER_DISCOUNT)} sur ta commande`
+                            : owned
+                              ? "Valable uniquement sur un trajet certifié Bluni"
+                              : `Échange ${catalog.itemById(VOUCHER_ITEM_ID)?.cost ?? ""} points contre ce bon dans Cadeaux`}
                     </p>
                 </div>
-                {enough && <Switch checked={booking.usePoints} onChange={(usePoints) => update({ usePoints })} label="Utiliser mes points Bluni" />}
+                {usable && <Switch checked={booking.useVoucher} onChange={(useVoucher) => update({ useVoucher })} label="Utiliser ma remise de 5 €" />}
             </section>
 
             <PromoField applied={booking.promo} discount={PROMO_DISCOUNT} onApply={(promo) => update({ promo })} onRemove={() => update({ promo: null })} />
@@ -73,6 +90,8 @@ export default function PaymentStep() {
                 onClick={pay}
                 type={paying ? "deactivated" : "primary"}
             />
+
+            {error && <p className={flow.error} role="alert">{error}</p>}
 
             <p className={styles.secure}>
                 <Lock size={14} />

@@ -19,7 +19,7 @@ export default function TripRow({ route, meta, badge, points, href }: TripRowPro
             </div>
             <span className={`${styles.badge} ${points ? styles.points : ""}`}>
                 {badge}
-                {points && <Image src="/images/icone-points.svg" alt="" width={15} height={15} />}
+                {points && <Image src="/images/icones/points.svg" alt="" width={15} height={15} />}
             </span>
         </>
     );

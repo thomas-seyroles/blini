@@ -3,7 +3,8 @@
 import { useApp } from "@/components/AppState/AppState";
 import SettingRow from "@/components/SettingRow/SettingRow";
 import { BookOpen, Bell, Car, Gift, Mic } from "lucide-react";
-import { flag, setSetting } from "@/lib/account";
+import { flag } from "@/lib/account";
+import { saveSetting } from "@/server/actions/account";
 
 const OPTIONS = [
     { key: "notifAnecdotes", icon: Mic, title: "Suivi de mes anecdotes", subtitle: "Écoute, sélection, écriture, publication" },
@@ -13,7 +14,7 @@ const OPTIONS = [
 ];
 
 export default function NotificationSettings() {
-    const { state, update } = useApp();
+    const { state } = useApp();
     const master = flag(state, "notifications");
     return (
         <div>
@@ -21,7 +22,7 @@ export default function NotificationSettings() {
                 icon={Bell}
                 title="Toutes les notifications"
                 subtitle={master ? "Activées" : "Désactivées : aucune alerte ne sera envoyée"}
-                toggle={{ checked: master, onChange: (v) => update(setSetting("notifications", v)) }}
+                toggle={{ checked: master, onChange: (v) => saveSetting("notifications", v) }}
             />
             {OPTIONS.map(({ key, icon, title, subtitle }) => (
                 <SettingRow
@@ -29,7 +30,7 @@ export default function NotificationSettings() {
                     icon={icon}
                     title={title}
                     subtitle={subtitle}
-                    toggle={{ checked: master && flag(state, key), onChange: (v) => update(setSetting(key, v)) }}
+                    toggle={{ checked: master && flag(state, key), onChange: (v) => saveSetting(key, v) }}
                 />
             ))}
         </div>

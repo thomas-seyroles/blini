@@ -25,7 +25,7 @@ export default function ConfirmDialog({ open, title, text, confirmLabel, cancelL
     }, [open]);
 
     return (
-        <dialog ref={ref} className={styles.root} onClose={onCancel} onClick={(e) => e.target === ref.current && onCancel()}>
+        <dialog ref={ref} autoFocus className={styles.root} onClose={onCancel} onClick={(e) => e.target === ref.current && onCancel()}>
             <h2 className={styles.title}>{title}</h2>
             <p className={styles.text}>{text}</p>
             <div className={styles.actions}>

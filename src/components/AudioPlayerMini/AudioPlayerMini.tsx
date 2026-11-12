@@ -4,7 +4,7 @@ import { Pause, Play } from "lucide-react";
 import { clock } from "@/lib/anecdotes";
 import Waveform from "../Waveform/Waveform";
 import styles from "./AudioPlayerMini.module.css";
-import { useSimulatedPlayer } from "./useSimulatedPlayer";
+import { usePlayer } from "./usePlayer";
 
 type AudioPlayerMiniProps = {
     durationSec: number;
@@ -12,10 +12,11 @@ type AudioPlayerMiniProps = {
     variant?: "card" | "round";
     size?: number;
     label?: string;
+    src?: string | null;
 }
 
-export default function AudioPlayerMini({ durationSec, variant = "card", size = 40, label = "Écouter l’enregistrement" }: AudioPlayerMiniProps) {
-    const player = useSimulatedPlayer(durationSec);
+export default function AudioPlayerMini({ durationSec, variant = "card", size = 40, label = "Écouter l’enregistrement", src }: AudioPlayerMiniProps) {
+    const player = usePlayer(durationSec, src);
     const Icon = player.playing ? Pause : Play;
     const aria = player.playing ? "Mettre en pause" : label;
 
