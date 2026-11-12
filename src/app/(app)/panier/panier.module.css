@@ -1,0 +1,152 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.packStories {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 10px;
+    border-radius: var(--rayon);
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--jaune-doux);
+}
+
+.suggestion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--rayon);
+    background: var(--jaune-doux);
+}
+
+.suggestion > svg {
+    flex-shrink: 0;
+    color: var(--violet);
+}
+
+.suggestionTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.suggestionTitle {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.suggestionHint {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.suggestionButton {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: var(--rayon);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.secure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.listen {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.illustration {
+    position: relative;
+    flex-shrink: 0;
+    align-self: center;
+    width: 260px;
+    height: 180px;
+}
+
+.halo,
+.mascot,
+.spark {
+    position: absolute;
+}
+
+.halo { top: 6px; left: 45px; }
+.mascot { top: 18px; left: 61px; width: 137px; height: 150px; object-fit: cover; }
+.sparkA { top: 26px; left: 20px; }
+.sparkB { top: 18px; left: 226px; }
+.sparkC { top: 118px; left: 232px; }
+.sparkD { top: 134px; left: 34px; }
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; scale: 1; }
+    50% { opacity: 0.35; scale: 0.65; }
+}
+
+.spark {
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+.sparkB { animation-delay: -0.8s; animation-duration: 2.4s; }
+.sparkC { animation-delay: -1.6s; animation-duration: 3.4s; }
+.sparkD { animation-delay: -2.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .spark {
+        animation: none;
+    }
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.heading {
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--texte-secondaire);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--jaune-doux);
+}
