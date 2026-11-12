@@ -1,0 +1,86 @@
+.root {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 62px 62px 84px 62px 62px;
+    justify-content: center;
+    align-items: start;
+    width: min(390px, calc(100% - 40px));
+    height: 72px;
+    padding-top: 8px;
+    border-radius: 36px;
+    background: var(--fond);
+    box-shadow: 0 4px 20px rgb(22 26 36 / 0.12);
+    transform: translateX(-50%);
+}
+
+.tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    font-family: var(--font-nav);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 14px;
+    color: var(--texte-secondaire);
+}
+
+.active {
+    font-weight: 600;
+    color: var(--violet-action);
+}
+
+.clip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 36px;
+    pointer-events: none;
+}
+
+.notch {
+    position: absolute;
+    top: -0.5px;
+    width: 50px;
+    height: 13px;
+    color: var(--violet);
+    pointer-events: none;
+}
+
+.blob {
+    display: block;
+    height: 100%;
+    transform-origin: 50% 0;
+    will-change: transform;
+}
+
+.blob svg {
+    display: block;
+}
+
+.main {
+    z-index: 2;
+    justify-content: flex-end;
+    height: 56px;
+    padding-top: 0;
+}
+
+.mic {
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 34px;
+    color: var(--fond);
+    background: var(--violet);
+    transform: translateX(-50%);
+}

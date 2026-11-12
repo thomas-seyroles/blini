@@ -1,0 +1,36 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+}
+
+.texts {
+    min-width: 0;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 19px;
+}
+
+.date {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.points {
+    font-size: 16px;
+    font-weight: 900;
+    white-space: nowrap;
+    color: var(--violet-action);
+}

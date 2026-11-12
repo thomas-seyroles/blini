@@ -1,0 +1,102 @@
+.heading {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 30px;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+
+.photo {
+    position: relative;
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--bordure);
+}
+
+.photo img {
+    object-fit: cover;
+}
+
+.texts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.commitments {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    border: 0;
+}
+
+.legend {
+    margin-bottom: 2px;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.points {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--rayon);
+    background: var(--jaune-doux);
+}
+
+.points img {
+    flex-shrink: 0;
+}
+
+.pointsTitle {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.pointsText {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 6px;
+}
+
+.hint {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--texte-secondaire);
+}

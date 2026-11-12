@@ -1,0 +1,109 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 100%;
+    max-width: 430px;
+    margin-inline: auto;
+    padding: 48px 20px 140px;
+    background: var(--fond);
+}
+
+.header {
+    max-width: 260px;
+    min-height: 100px;
+}
+
+.mascot {
+    position: absolute;
+    top: 106px;
+    right: 27%;
+    width: 31%;
+    height: auto;
+    pointer-events: none;
+}
+
+.banner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--rayon);
+    color: var(--texte);
+    background: var(--jaune-doux);
+    border: 2px solid var(--jaune);
+}
+
+.banner span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.banner strong {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.banner small {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.total {
+    padding: 4px 10px;
+    border-radius: var(--rayon);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--violet-action);
+    background: var(--jaune-points);
+}
+
+.tooltip {
+    position: fixed;
+    bottom: 142px;
+    left: 50%;
+    z-index: 9;
+    translate: -50% 0;
+    padding: 4px 16px;
+    white-space: nowrap;
+    pointer-events: none;
+    border-radius: 7px;
+    font-size: 15px;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    translate: -50% 0;
+    border: 7px solid transparent;
+    border-top-color: var(--violet);
+}
+

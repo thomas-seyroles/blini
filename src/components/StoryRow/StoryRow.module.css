@@ -1,0 +1,57 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    background: var(--fond);
+}
+
+.pack {
+    gap: 14px;
+    padding: 14px;
+    border-style: dashed;
+    border-color: var(--jaune);
+}
+
+.link {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.cover {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    font-size: 24px;
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 19px;
+}
+
+.pack .title {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.infos {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--texte-secondaire);
+}

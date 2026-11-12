@@ -1,0 +1,258 @@
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.trip {
+    padding: 5px 10px;
+    border-radius: var(--rayon-pastille);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--jaune-doux);
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 30px;
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--texte-secondaire);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+}
+
+.listTitle {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.itemCheck {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+}
+
+.itemCheck label {
+    font-size: 14px;
+    font-weight: 700;
+    padding-block: 4px;
+}
+
+.duration {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+    font-variant-numeric: tabular-nums;
+}
+
+.passengers {
+    padding: 4px 16px;
+}
+
+.row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding-block: 12px;
+}
+
+.row:not(:last-child) {
+    border-bottom: 1.5px solid var(--violet-doux);
+}
+
+.avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.avatarYellow {
+    color: var(--texte);
+    background: var(--jaune-doux);
+}
+
+.rowTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.name {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.sub {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.choices {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.choice {
+    padding: 0;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--violet);
+    cursor: pointer;
+}
+
+.refuse {
+    color: var(--erreur);
+}
+
+.badge {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: var(--rayon-pastille);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.badgeOk {
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.badgeKo {
+    color: var(--fond);
+    background: var(--erreur);
+}
+
+.badgeWait {
+    color: var(--texte);
+    background: var(--jaune-doux);
+}
+
+.rules {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--rayon);
+    background: var(--violet-doux);
+}
+
+.rulesIcon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.rulesTitle {
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--violet);
+}
+
+.rulesList {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 19px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 6px;
+}
+
+.hint {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--texte-secondaire);
+}
+
+.reminded {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--violet);
+}
+
+.done {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding-top: 60px;
+    text-align: center;
+}
+
+.doneIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    color: var(--fond);
+    background: var(--violet);
+}

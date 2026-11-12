@@ -1,0 +1,66 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: 2px solid var(--violet);
+  border-radius: var(--rayon);
+}
+
+.yellow {
+  border-color: var(--jaune);
+}
+
+.day {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--violet);
+}
+
+.dayYellow {
+  color: var(--jaune-fonce);
+}
+
+.schedule {
+  display: flex;
+  gap: 14px;
+}
+
+.hours {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.places {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.place {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.address {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texte-secondaire);
+}
+
+.duration {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: var(--rayon);
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--jaune-doux);
+}
+
+.compact .places {
+  gap: 50px;
+}

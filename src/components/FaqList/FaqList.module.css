@@ -1,0 +1,28 @@
+.item {
+    border-bottom: 1px solid var(--bordure);
+}
+
+.item:last-child {
+    border-bottom: 0;
+}
+
+.question {
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.answer {
+    padding: 0 16px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--texte-secondaire);
+}
+
+.contact {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}

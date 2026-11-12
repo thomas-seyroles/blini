@@ -1,69 +1,37 @@
 import Image from "next/image";
+import PageTransition from "@/components/PageTransition/PageTransition";
+import Greeting from "@/components/Greeting/Greeting";
+import PreviousTrips from "@/components/PreviousTrips/PreviousTrips";
+import RegionCarousel from "@/components/RegionCarousel/RegionCarousel";
+import SectionTitle from "@/components/SectionTitle/SectionTitle";
+import TripPlanner from "@/components/TripPlanner/TripPlanner";
+import { regions, storiesOfRegion } from "@/lib/stories";
 import styles from "./page.module.css";
+
+const carousel = regions.map(({ slug, name, cover }) => {
+  const count = storiesOfRegion(slug).length;
+  return { slug, region: name, count: `${count} histoire${count > 1 ? "s" : ""}`, cover, href: `/histoires/region/${slug}` };
+});
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <PageTransition>
+    <main className={styles.page}>
+      <header className={styles.header}>
+        <Greeting className={styles.greeting} />
+        <h1 className={styles.title}>on se PRÉVOIT<br />UN BLUNI ?</h1>
+        <Image className={styles.mascotCar} src="/images/mascotte-voiture.png" alt="" width={122} height={130} priority />
+      </header>
+      <TripPlanner />
+      <Image className={styles.mascotFrance} src="/images/mascotte-france.png" alt="" width={149} height={183} />
+      <section className={styles.section}>
+        <SectionTitle title="Régions traversées" link={{ label: "Voir tout →", href: "/histoires/boutique" }} />
+        <RegionCarousel regions={carousel} />
+      </section>
+      <section className={styles.section}>
+        <PreviousTrips />
+      </section>
+    </main>
+    </PageTransition>
   );
 }

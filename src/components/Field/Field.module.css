@@ -1,0 +1,62 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 16px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    color: var(--texte-secondaire);
+    background: var(--fond);
+}
+
+.field:focus-within {
+    border-color: var(--violet);
+}
+
+.multiline {
+    align-items: flex-start;
+    padding-block: 14px;
+}
+
+.invalid {
+    border-color: var(--erreur);
+}
+
+.input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--texte);
+    background: none;
+    resize: none;
+}
+
+.input::placeholder {
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.input:focus-visible {
+    outline: 0;
+}
+
+.error {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--erreur);
+}

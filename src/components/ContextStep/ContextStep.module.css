@@ -1,0 +1,106 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 30px;
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--texte-secondaire);
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    padding: 6px 10px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--violet);
+    background: var(--violet-doux);
+    cursor: pointer;
+}
+
+.add {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 140px;
+    height: 102px;
+    border: 2px dashed var(--violet);
+    border-radius: var(--rayon);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--violet);
+    background: var(--fond);
+    cursor: pointer;
+}
+
+.addIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background: var(--violet-doux);
+}
+
+.photo {
+    position: relative;
+    width: 140px;
+    height: 102px;
+    overflow: hidden;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+}
+
+.photo img {
+    object-fit: cover;
+}
+
+.remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    color: var(--fond);
+    background: var(--texte);
+    cursor: pointer;
+}

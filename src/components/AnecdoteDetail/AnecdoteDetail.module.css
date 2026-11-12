@@ -1,0 +1,121 @@
+.cover {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    overflow: hidden;
+    border-radius: var(--rayon);
+    background: var(--violet-doux);
+}
+
+.cover img:not(.fallback) {
+    object-fit: cover;
+}
+
+.fallback {
+    width: auto;
+    height: 110px;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 30px;
+}
+
+.place {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.place svg {
+    flex-shrink: 0;
+    color: var(--violet);
+}
+
+.details {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.status {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+}
+
+.statusTitle {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.gift {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--rayon);
+    background: var(--jaune-doux);
+}
+
+.giftIcon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.giftTitle {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.giftText {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.edit,
+.remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--violet);
+    background: var(--fond);
+    cursor: pointer;
+}
+
+.remove {
+    color: var(--erreur);
+    border-color: var(--erreur);
+}
+
+.spacer {
+    height: 96px;
+}

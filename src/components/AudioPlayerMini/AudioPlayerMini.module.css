@@ -1,0 +1,41 @@
+.card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    background: var(--fond);
+}
+
+.play {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    color: var(--fond);
+    background: var(--violet);
+    cursor: pointer;
+}
+
+.time {
+    flex-shrink: 0;
+    min-width: 42px;
+    font-size: 14px;
+    font-weight: 900;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.round {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--violet);
+    background: var(--violet-doux);
+    cursor: pointer;
+}

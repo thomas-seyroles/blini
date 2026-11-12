@@ -1,0 +1,23 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 2px solid var(--violet-doux);
+    border-radius: 12px;
+    background: var(--fond);
+}
+
+.total {
+    font-size: 22px;
+    font-weight: 900;
+    white-space: nowrap;
+    color: var(--violet);
+}
+
+.places {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--texte-secondaire);
+}

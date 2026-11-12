@@ -1,0 +1,106 @@
+.root {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 59px;
+    border: 0;
+    background: none;
+    text-align: left;
+}
+
+.box {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    background: var(--fond);
+}
+
+.decor,
+.pin {
+    position: absolute;
+}
+
+.decor {
+    top: 4px;
+}
+
+.pin {
+    top: 19px;
+}
+
+.texts {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-right: 36px;
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-attenue);
+}
+
+.value {
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.placeholder {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--texte-secondaire);
+}
+
+.active .box {
+    border-color: var(--violet);
+}
+
+.start {
+    padding-left: 36px;
+}
+
+.start .box {
+    left: 18px;
+    right: 15px;
+}
+
+.start .decor {
+    left: -9px;
+}
+
+.start .pin {
+    left: 7px;
+}
+
+.end {
+    padding-left: 38px;
+}
+
+.end .box {
+    left: 4px;
+    right: 30px;
+}
+
+.end .decor,
+.end .pin {
+    transform: scaleX(-1);
+}
+
+.end .decor {
+    right: 3px;
+}
+
+.end .pin {
+    right: 19px;
+}

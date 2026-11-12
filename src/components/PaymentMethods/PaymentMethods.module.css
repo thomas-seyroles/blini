@@ -1,0 +1,142 @@
+.methods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.method {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    text-align: left;
+    background: var(--fond);
+}
+
+.selected {
+    border-color: var(--violet);
+}
+
+.pastille {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background: var(--jaune-doux);
+}
+
+.selected .pastille {
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.methodTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.methodTitle {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.methodHint {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.radio {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--jaune);
+    border-radius: 11px;
+    color: var(--fond);
+    background: var(--fond);
+}
+
+.selected .radio {
+    border-color: var(--violet);
+    background: var(--violet);
+}
+
+.addLink {
+    align-self: flex-start;
+    border: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--violet);
+    background: none;
+}
+
+.cardForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 2px dashed var(--violet);
+    border-radius: var(--rayon);
+}
+
+.cardRow {
+    display: flex;
+    gap: 10px;
+}
+
+.input {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--fond);
+}
+
+.input:focus-visible {
+    outline: 0;
+    border-color: var(--violet);
+}
+
+.cardActions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cancel {
+    border: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--texte-secondaire);
+    background: none;
+}
+
+.add {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: var(--rayon);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.error {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--erreur);
+}

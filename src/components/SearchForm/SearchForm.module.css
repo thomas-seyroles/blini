@@ -1,0 +1,99 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.fields {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.trace {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+    width: calc(100% - 34px);
+    height: 81px;
+    overflow: visible;
+    fill: none;
+    pointer-events: none;
+}
+
+.trace path {
+    stroke: var(--jaune);
+    stroke-width: 2px;
+    stroke-dasharray: 10 9;
+    vector-effect: non-scaling-stroke;
+}
+
+.swap {
+    position: absolute;
+    top: 50px;
+    right: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 19px;
+    color: var(--fond);
+    background: var(--violet);
+    cursor: pointer;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dates {
+    display: flex;
+    gap: 10px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.swap:disabled {
+    opacity: 0.5;
+}
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 19;
+    border: 0;
+    background: transparent;
+    cursor: default;
+}
+
+.popup {
+    position: absolute;
+    left: 18px;
+    right: 15px;
+    z-index: 20;
+}
+
+.popFrom {
+    top: 67px;
+}
+
+.popTo {
+    top: 146px;
+}
+
+.popDates {
+    top: 220px;
+}
+
+.popPassengers {
+    top: 286px;
+}

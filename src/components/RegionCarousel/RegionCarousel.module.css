@@ -1,0 +1,14 @@
+.track {
+    display: flex;
+    gap: 11px;
+    margin-inline: -20px;
+    padding-inline: 20px;
+    scroll-padding-inline: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+    display: none;
+}

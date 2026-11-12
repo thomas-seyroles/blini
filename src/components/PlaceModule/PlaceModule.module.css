@@ -1,0 +1,85 @@
+.input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+}
+
+.input input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--texte);
+    caret-color: var(--violet);
+    background: none;
+}
+
+.hint {
+    margin-block: 10px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding-block: 10px;
+    border: 0;
+    background: none;
+    text-align: left;
+}
+
+.pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 17px;
+    background: var(--jaune-doux);
+}
+
+.pinSelected {
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.name {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.detail {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.check {
+    color: var(--violet);
+}
+
+.empty {
+    padding-block: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}

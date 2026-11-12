@@ -1,0 +1,81 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    min-height: 54px;
+    padding: 0 12px 0 10px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    background: var(--fond);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    color: var(--texte);
+    background: var(--jaune-doux);
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.value {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--texte);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.active {
+    border-color: var(--violet);
+}
+
+.active .badge {
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.open {
+    border-color: var(--jaune-fonce);
+    background: var(--jaune-doux);
+}
+
+.open .badge {
+    background: var(--jaune);
+}
+
+.add {
+    border-style: dashed;
+    border-color: var(--violet);
+}
+
+.add .badge {
+    color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.add .value {
+    color: var(--violet);
+}

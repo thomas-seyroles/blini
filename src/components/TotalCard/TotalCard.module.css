@@ -1,0 +1,27 @@
+.total {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 16px;
+    border-radius: var(--rayon);
+    text-align: center;
+    background: var(--violet-doux);
+}
+
+.totalLabel {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--violet);
+}
+
+.totalAmount {
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--violet);
+}
+
+.totalSummary {
+    font-size: 12px;
+    font-weight: 600;
+}

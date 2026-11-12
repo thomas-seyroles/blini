@@ -1,0 +1,194 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+    border: 2px solid var(--jaune);
+    border-radius: var(--rayon);
+    background: var(--fond);
+}
+
+.date {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.city {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.driver {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.photo {
+    position: relative;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bordure);
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.headset {
+    position: absolute;
+    left: 24px;
+    top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--fond);
+    border-radius: 11px;
+    background: var(--jaune);
+}
+
+.driverName {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.headsetInfo {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-attenue);
+}
+
+.separator {
+    height: 0;
+    margin-block: 10px;
+    border: 0;
+    border-top: 2px dashed var(--jaune);
+}
+
+.violet {
+    border-color: var(--violet);
+}
+
+.violet .date {
+    color: var(--violet);
+}
+
+.violet .separator {
+    border-top-color: var(--violet);
+}
+
+.avatars {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-right: -8px;
+    border: 2px solid var(--fond);
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.avatarL {
+    color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.avatarT {
+    background: var(--jaune);
+}
+
+.free {
+    margin-right: 0;
+    border-color: var(--violet);
+    border-style: dashed;
+    font-size: 16px;
+    color: var(--violet);
+    background: var(--fond);
+}
+
+.seatInfo {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--violet);
+}
+
+.empty {
+    align-items: center;
+    gap: 10px;
+    padding: 24px 18px;
+    border-style: dashed;
+    border-color: var(--violet);
+    text-align: center;
+}
+
+.lulu {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--jaune-doux);
+}
+
+.lulu img {
+    position: absolute;
+    top: 2px;
+    left: -9px;
+}
+
+.emptyTitle {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.emptyText {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    color: var(--texte-secondaire);
+}
+
+.empty > a,
+.empty > button {
+    margin-top: 4px;
+}
+
+.cover {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.cta {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,356 @@
+.trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 2px solid var(--violet);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--violet);
+    background: var(--fond);
+}
+
+.count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--rayon);
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+/* Calque modal */
+.root {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    max-width: 430px;
+    margin-inline: auto;
+    visibility: hidden;
+}
+
+.veil {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: var(--texte);
+}
+
+.panel {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.sheet {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: calc(100dvh - 24px);
+    padding: 12px 20px 24px;
+    overflow-y: auto;
+    border-radius: var(--rayon-feuille) var(--rayon-feuille) 0 0;
+    background: var(--fond);
+}
+
+.handle {
+    align-self: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--violet-doux);
+}
+
+/* Décor au-dessus de la feuille */
+.mascot,
+.sparkleLarge,
+.sparkleMedium,
+.sparkleSmall {
+    position: absolute;
+    pointer-events: none;
+}
+
+.mascot {
+    right: 64px;
+    bottom: calc(100% - 22px);
+    width: 106px;
+    height: 116px;
+    object-fit: cover;
+}
+
+.sparkleLarge {
+    bottom: calc(100% + 20px);
+    left: 34px;
+}
+
+.sparkleMedium {
+    bottom: calc(100% + 43px);
+    left: 70px;
+}
+
+.sparkleSmall {
+    bottom: calc(100% + 72px);
+    left: 300px;
+}
+
+/* Scintillement lent, via les propriétés scale, translate et rotate, indépendantes du transform de gsap */
+@keyframes twinkle {
+    0%, 100% { opacity: 1; scale: 1; }
+    50% { opacity: 0.3; scale: 0.65; }
+}
+
+@keyframes float {
+    0%, 100% { translate: 0 0; rotate: -1.5deg; }
+    50% { translate: 0 -6px; rotate: 1.5deg; }
+}
+
+.sparkleLarge,
+.sparkleMedium,
+.sparkleSmall {
+    animation: twinkle 2.8s ease-in-out infinite;
+}
+
+.sparkleMedium {
+    animation-duration: 2.2s;
+    animation-delay: -0.9s;
+}
+
+.sparkleSmall {
+    animation-duration: 3.4s;
+    animation-delay: -1.7s;
+}
+
+.mascot {
+    animation: float 4.5s ease-in-out infinite;
+}
+
+.root:not([data-open]) * {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mascot,
+    .sparkleLarge,
+    .sparkleMedium,
+    .sparkleSmall {
+        animation: none;
+    }
+}
+
+/* En-tête */
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.close {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 17px;
+    background: var(--jaune-doux);
+}
+
+/* Groupes */
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 8px 12px;
+    border: 2px solid var(--jaune);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    background: var(--fond);
+}
+
+.chipActive {
+    border-color: var(--violet);
+    color: var(--violet);
+    background: var(--violet-doux);
+}
+
+/* Interrupteurs */
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border: 0;
+    border-bottom: 1.5px solid var(--violet-doux);
+    text-align: left;
+    background: none;
+}
+
+.optionTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.optionLabel {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.optionHint {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.switch {
+    position: relative;
+    flex-shrink: 0;
+    width: 46px;
+    height: 28px;
+    border-radius: 14px;
+    background: var(--interrupteur-off);
+    transition: background 0.2s;
+}
+
+.switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--fond);
+    box-shadow: 0 1px 2px rgba(22, 26, 36, 0.2);
+    transition: transform 0.2s;
+}
+
+.option[aria-checked="true"] .switch {
+    background: var(--jaune);
+}
+
+.option[aria-checked="true"] .switch::after {
+    transform: translateX(18px);
+}
+
+/* Prix max */
+.priceHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--jaune);
+}
+
+.range {
+    width: 100%;
+    height: 28px;
+    appearance: none;
+    background: transparent;
+}
+
+.range::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, var(--jaune) calc(14px + var(--p) * (100% - 28px)), var(--jaune-doux) 0);
+}
+
+.range::-moz-range-track {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, var(--jaune) calc(14px + var(--p) * (100% - 28px)), var(--jaune-doux) 0);
+}
+
+.range::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-top: -10px;
+    appearance: none;
+    border: 3px solid var(--jaune);
+    border-radius: 50%;
+    background: var(--fond);
+}
+
+.range::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: 3px solid var(--jaune);
+    border-radius: 50%;
+    background: var(--fond);
+}
+
+.bounds {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 4px;
+}
+
+.clear {
+    border: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--texte-secondaire);
+    background: none;
+}
+
+.apply {
+    flex: 1;
+    height: 52px;
+    border: 0;
+    border-radius: var(--rayon);
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--fond);
+    background: var(--violet);
+}

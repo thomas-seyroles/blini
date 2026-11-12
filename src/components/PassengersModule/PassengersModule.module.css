@@ -1,0 +1,59 @@
+.row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-block: 10px;
+    border-bottom: 1.5px solid var(--violet-doux);
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.hint {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--violet);
+    border-radius: 17px;
+    color: var(--violet);
+    background: none;
+}
+
+.step:disabled {
+    border-color: var(--violet-doux);
+    color: var(--violet-doux);
+}
+
+.value {
+    width: 24px;
+    font-size: 17px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.note {
+    padding-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--texte-secondaire);
+}

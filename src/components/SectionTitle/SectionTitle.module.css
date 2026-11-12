@@ -1,0 +1,30 @@
+.root {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    color: var(--texte-secondaire);
+}
+
+.link {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--violet);
+    white-space: nowrap;
+}

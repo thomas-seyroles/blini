@@ -1,0 +1,170 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 110px;
+}
+
+.tags {
+    display: flex;
+    gap: 8px;
+}
+
+.tagCancelled {
+    color: var(--erreur);
+    background: var(--jaune-doux);
+}
+
+.notice {
+    padding: 12px 14px;
+    border-radius: var(--rayon);
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--jaune-doux);
+}
+
+.driver {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+}
+
+.photo {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.driverTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.meta svg {
+    color: var(--jaune);
+    fill: var(--jaune);
+}
+
+.people {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.person {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.personName {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 900;
+    background: var(--violet-doux);
+}
+
+.request {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+}
+
+.requestTexts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.refuse,
+.accept {
+    height: 34px;
+    padding-inline: 10px;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.refuse {
+    color: var(--violet);
+    background: var(--fond);
+}
+
+.accept {
+    color: var(--fond);
+    background: var(--violet-action);
+}
+
+.accept:disabled {
+    border-color: var(--bordure);
+    color: var(--texte-attenue);
+    background: var(--bordure);
+    cursor: not-allowed;
+}
+
+.facts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+}
+
+.facts li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.facts strong {
+    font-weight: 800;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hint {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}

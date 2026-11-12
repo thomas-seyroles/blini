@@ -1,0 +1,32 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.cancel,
+.save {
+    flex: 1;
+    height: 40px;
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.cancel {
+    color: var(--violet);
+    background: var(--fond);
+}
+
+.save {
+    color: var(--fond);
+    background: var(--violet-action);
+}

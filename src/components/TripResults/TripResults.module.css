@@ -1,0 +1,164 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 430px;
+  margin-inline: auto;
+  padding: 56px 20px 140px;
+  background: var(--fond);
+}
+
+/* En-tête */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--jaune);
+  border-radius: 50%;
+  background: var(--fond);
+}
+
+.route {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.arrow {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--violet);
+}
+
+.criteria {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texte-secondaire);
+}
+
+/* Résultats */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 16px 12px;
+}
+
+.count {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--rayon);
+  background: var(--violet-doux);
+}
+
+.legendLogo {
+  flex-shrink: 0;
+}
+
+.legendTitle {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--violet-action);
+}
+
+.legendText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texte-secondaire);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Histoires de la route */
+.stories {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--rayon);
+  background: var(--jaune-doux);
+}
+
+.mascot {
+  position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 58px;
+  overflow: hidden;
+}
+
+.mascot img {
+  position: absolute;
+  top: -58.99%;
+  left: -95.65%;
+  width: 535.4%;
+  height: 603.62%;
+  max-width: none;
+}
+
+.storiesTexts {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.storiesTitle {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.storiesText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texte-secondaire);
+}
+
+/* États vides */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

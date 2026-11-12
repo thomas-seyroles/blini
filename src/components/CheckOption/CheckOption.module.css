@@ -1,0 +1,39 @@
+.root {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-block: 10px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.root input {
+    position: absolute;
+    opacity: 0;
+}
+
+.box {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--jaune);
+    border-radius: 6px;
+    color: transparent;
+    background: var(--fond);
+}
+
+.root input:checked + .box {
+    border-color: var(--violet);
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.root input:focus-visible + .box {
+    outline: 2px solid var(--violet);
+    outline-offset: 2px;
+}

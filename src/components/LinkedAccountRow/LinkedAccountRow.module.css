@@ -1,0 +1,90 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--bordure);
+}
+
+.logo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px dashed var(--bordure);
+    border-radius: var(--rayon-pastille);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--texte-secondaire);
+    background: var(--fond-secondaire);
+}
+
+.texts {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.service {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.status {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    overflow-wrap: anywhere;
+    color: var(--texte-secondaire);
+}
+
+.side {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.linked {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--violet);
+}
+
+.unlink {
+    border: 0;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+    color: var(--texte-secondaire);
+    background: none;
+    cursor: pointer;
+}
+
+.unlink:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.link {
+    flex-shrink: 0;
+    height: 36px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: var(--rayon);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--texte);
+    background: var(--jaune);
+    cursor: pointer;
+}

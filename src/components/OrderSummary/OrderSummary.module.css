@@ -1,0 +1,33 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.discount {
+    color: var(--violet);
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1.5px solid var(--violet-doux);
+    font-size: 16px;
+    font-weight: 900;
+}

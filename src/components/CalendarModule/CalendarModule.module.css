@@ -1,0 +1,71 @@
+.month {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 15px;
+    background: var(--jaune-doux);
+}
+
+.nav:disabled {
+    opacity: 0.4;
+}
+
+.monthLabel {
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 40px);
+    justify-content: space-between;
+    row-gap: 4px;
+}
+
+.weekday {
+    height: 16px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--texte-secondaire);
+}
+
+.day {
+    width: 40px;
+    height: 40px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    background: none;
+}
+
+.day:disabled {
+    opacity: 0.4;
+}
+
+.day:not(:disabled):hover {
+    background: var(--violet-doux);
+}
+
+.today {
+    border-color: var(--jaune);
+}
+
+.selected,
+.selected:not(:disabled):hover {
+    font-weight: 900;
+    color: var(--fond);
+    background: var(--violet);
+}

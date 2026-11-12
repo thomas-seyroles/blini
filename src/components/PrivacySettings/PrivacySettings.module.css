@@ -1,0 +1,19 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--texte-secondaire);
+}
+
+.message {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--violet);
+}

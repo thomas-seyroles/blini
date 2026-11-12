@@ -1,0 +1,107 @@
+.root {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--texte-secondaire);
+}
+
+.balance {
+    position: relative;
+    width: fit-content;
+    min-width: 190px;
+    height: 66px;
+}
+
+.highlight {
+    position: absolute;
+    top: 34px;
+    left: 0;
+}
+
+.value {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 62px;
+    white-space: nowrap;
+}
+
+.star {
+    position: absolute;
+    top: 8px;
+    left: 100%;
+    margin-left: 4px;
+    width: 39px;
+    height: 39px;
+}
+
+.gauge {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--bordure);
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--violet);
+    transition: width 0.7s ease;
+}
+
+.goal {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.rules {
+    display: flex;
+    gap: 20px;
+    padding-top: 4px;
+}
+
+.rule {
+    flex: 1;
+    min-width: 0;
+}
+
+.pts {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--jaune);
+}
+
+.text {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--texte-secondaire);
+}
+
+.mascot {
+    position: absolute;
+    top: -21px;
+    right: 29px;
+    width: 125px;
+    height: 130px;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fill {
+        transition: none;
+    }
+}

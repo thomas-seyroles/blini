@@ -1,0 +1,124 @@
+.compact {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+}
+
+.cell {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.bar {
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--violet-doux);
+}
+
+.reached {
+    background: var(--violet);
+}
+
+.label {
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--texte-secondaire);
+}
+
+.active {
+    font-weight: 800;
+    color: var(--violet);
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    gap: 12px;
+}
+
+.rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dot {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--violet-doux);
+    border-radius: 12px;
+    color: var(--fond);
+    background: var(--fond);
+}
+
+.done {
+    border-color: var(--violet);
+    background: var(--violet);
+}
+
+.current {
+    border-color: var(--jaune);
+    background: var(--jaune);
+}
+
+.core {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--texte);
+}
+
+.line {
+    flex: 1;
+    width: 2px;
+    min-height: 14px;
+    background: var(--violet-doux);
+}
+
+.lineDone {
+    background: var(--violet);
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-bottom: 16px;
+}
+
+.row:last-child .texts {
+    padding-bottom: 0;
+}
+
+.title {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.muted {
+    color: var(--texte-secondaire);
+}
+
+.sub {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.subCurrent {
+    color: var(--violet);
+}

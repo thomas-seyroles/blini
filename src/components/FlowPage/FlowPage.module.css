@@ -1,0 +1,48 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 430px;
+    margin-inline: auto;
+    padding: 56px 20px 32px;
+    background: var(--fond);
+}
+
+.heading {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.box {
+    border: 2px solid var(--violet);
+    border-radius: var(--rayon);
+    background: var(--fond);
+}
+
+.boxYellow {
+    border-color: var(--jaune);
+}
+
+.tag {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    color: var(--violet);
+    background: var(--violet-doux);
+}
+
+.link {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--violet);
+}
+
+.centerLink {
+    align-self: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--violet);
+}

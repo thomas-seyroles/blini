@@ -1,0 +1,44 @@
+.root {
+    border-bottom: 1px solid var(--violet-doux);
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 14px;
+}
+
+.texts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.route {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.meta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texte-secondaire);
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: var(--rayon-pastille);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--violet);
+    background: var(--jaune-doux);
+}
+
+.points {
+    color: var(--violet-action);
+    background: var(--jaune-points);
+}

@@ -1,0 +1,20 @@
+.root {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--bordure);
+}
+
+.image {
+    object-fit: cover;
+}
+
+.fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-titre);
+    font-size: 1.6em;
+    color: var(--violet);
+    background: linear-gradient(135deg, var(--violet-doux), var(--jaune-doux));
+}

@@ -1,0 +1,56 @@
+.root {
+    width: min(350px, calc(100% - 40px));
+    margin: auto;
+    padding: 22px 20px 18px;
+    border: 0;
+    border-radius: var(--rayon-feuille);
+    color: var(--texte);
+    background: var(--fond);
+}
+
+.root::backdrop {
+    background: rgba(22, 26, 36, 0.6);
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.text {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--texte-secondaire);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.cancel {
+    border: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--texte-secondaire);
+    background: none;
+}
+
+.confirm {
+    flex: 1;
+    height: 48px;
+    border: 0;
+    border-radius: var(--rayon);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--fond);
+    background: var(--violet);
+}
+
+.danger {
+    background: var(--erreur);
+}
