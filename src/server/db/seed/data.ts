@@ -128,7 +128,7 @@ export const portrait = (female: boolean, n: number) => `/images/pdp/${female ? 
 export const people: Person[] = [
     // Comptes principaux de test
     { key: "theo", firstName: "Théo", lastName: "Martin", female: false, role: "passager", blablacar: true, lunii: false },
-    { key: "camille", firstName: "Camille", lastName: "Durand", female: true, role: "passager", blablacar: false, lunii: true },
+    { key: "camille", firstName: "Camille", lastName: "Durand", female: true, role: "passager", blablacar: true, lunii: true },
 
     // Conducteurs
     { key: "julie", firstName: "Julie", lastName: "Bernard", female: true, role: "conducteur", blablacar: true, lunii: false, driver: { car: "Peugeot 308", color: "bleue", rating: 4.9, reviews: 128, bio: "Je fais Paris-Lyon toutes les semaines. Les enfants adorent le casque Lunii, moi j’adore les anecdotes des régions traversées.", equipments: ["headset", "childSeat", "stories", "chat"] } },
@@ -266,8 +266,8 @@ export const anecdotes: [string, string, string, string, number, boolean, string
     ["theo", "Les cigognes de la gare de Colmar", "Colmar · Alsace", "alsace", 2, true, "Un couple de cigognes qui niche chaque printemps sur le toit de la gare.", null],
     ["theo", "Le marché de Beaune", "Beaune · Bourgogne-Franche-Comté", "bourgogne-franche-comte", 1, true, "", null],
     ["theo", "Le clocher de Semur-en-Auxois", "Semur-en-Auxois · Bourgogne-Franche-Comté", "bourgogne-franche-comte", 0, false, "", null],
-    ["camille", "La calanque aux mille couleurs", "Cassis · Provence-Alpes-Côte d’Azur", "provence-alpes-cote-d-azur", 1, true, "", null],
-    ["camille", "Le santon perdu d’Aubagne", "Aubagne · Provence-Alpes-Côte d’Azur", "provence-alpes-cote-d-azur", 0, false, "", null],
+    ["camille", "Le carrousel des mondes marins", "Nantes · Pays de la Loire", "pays-de-la-loire", 1, true, "Un manège géant où Léo a chevauché un calmar, à deux pas de l’éléphant des Machines de l’île.", null],
+    ["camille", "La fée du passage Pommeraye", "Nantes · Pays de la Loire", "pays-de-la-loire", 0, false, "", null],
     ["lea", "Le chat de la tour Eiffel", "Paris · Île-de-France", "ile-de-france", 2, true, "", null],
     ["yann", "La légende du phare du Créac’h", "Ouessant · Bretagne", "bretagne", 3, true, "", null],
 ];

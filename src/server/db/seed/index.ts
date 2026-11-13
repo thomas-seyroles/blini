@@ -78,7 +78,7 @@ async function main() {
         blablacarId: p.blablacar ? `bbc-${p.key}` : null,
         luniiId: p.lunii ? `lunii-${p.key}` : null,
         // Les avis du conducteur servent de proxy au nombre de trajets BlaBlaCar
-        blablacarTrips: p.blablacar ? (p.driver?.reviews ?? (p.key === "theo" ? 12 : 0)) : 0,
+        blablacarTrips: p.blablacar ? (p.driver?.reviews ?? ({ theo: 12, camille: 8 }[p.key] ?? 0)) : 0,
         rulesAcceptedAt: p.key === "camille" ? null : new Date(),
     }));
     await db.insert(t.users).values(userRows);
@@ -179,9 +179,9 @@ async function main() {
     book(julieReturn, "ines", 2, "demande");
     book(julieReturn, "hugo", 1, "acceptee");
 
-    // Côté Camille (compte Lunii) : un trajet passé et un à venir
-    book(journey("marseille", "nice", day(-9), "12:15", "zoe", true), "camille", 1, "acceptee");
-    const camilleNext = journey("marseille", "montpellier", day(7), "09:15", "zoe", true);
+    // Côté Camille (persona : Nantaise, maman de Léo, déjà sur BlaBlaCar) : un trajet passé et un à venir avec Yann
+    book(journey("nantes", "rennes", day(-9), "12:15", "yann", true), "camille", 1, "acceptee");
+    const camilleNext = journey("nantes", "rennes", day(7), "09:15", "yann", true);
     book(camilleNext, "camille", 1, "demande");
 
     // Trajets générés : surtout des figurants, parfois un compte de test pour qu'il ait un historique
@@ -273,7 +273,7 @@ async function main() {
 
     const owned: [string, string[]][] = [
         ["theo", ["ile-de-france-1", "alsace-2"]],
-        ["camille", ["provence-alpes-cote-d-azur-1", "provence-alpes-cote-d-azur-2", "provence-alpes-cote-d-azur-3", "bretagne-1"]],
+        ["camille", ["pays-de-la-loire-1", "pays-de-la-loire-2", "pays-de-la-loire-3", "bretagne-1"]],
         ["lea", ["ile-de-france-2", "occitanie-1"]],
         ["julie", ["auvergne-rhone-alpes-1"]],
     ];
@@ -281,7 +281,7 @@ async function main() {
     // Playlists de trajets à venir : histoires choisies et collections
     const playlists: [string, JourneyRow, ({ story: string } | { region: string })[]][] = [
         ["theo", nextParisLyon, [{ region: "ile-de-france" }, { story: "alsace-2" }]],
-        ["camille", camilleNext, [{ region: "provence-alpes-cote-d-azur" }, { story: "bretagne-1" }]],
+        ["camille", camilleNext, [{ region: "pays-de-la-loire" }, { story: "bretagne-1" }]],
         ["julie", julieReturn, [{ story: "auvergne-rhone-alpes-1" }]],
     ];
     for (const [user, j, entries] of playlists) {
@@ -303,7 +303,7 @@ async function main() {
 
     const [{ count }] = await db.select({ count: sql<number>`count(*)::int` }).from(t.journeys);
     console.log(`Seed terminé : ${userRows.length} comptes, ${count} trajets, ${bookingRows.length} réservations.`);
-    console.log("Connexion : annuaire OAuth fictif (BlaBlaCar : Thomas Seyroles, absent de la base donc compte vide à l’inscription. Lunii : Camille, Anaïs).");
+    console.log("Connexion : annuaire OAuth fictif (BlaBlaCar : Thomas Seyroles, absent de la base donc compte vide à l’inscription. Lunii : Camille).");
 }
 
 main()

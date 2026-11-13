@@ -52,6 +52,31 @@ Pas de Tailwind. Polices via `next/font` dans `src/app/layout.tsx` : Nunito (tex
 - Commentaires uniquement pour découper des sections, jamais pour paraphraser le code.
 - Pas de tiret cadratin dans le code, les textes ou les commentaires.
 
+## Déploiement (VPS)
+
+Docker via `compose.prod.yaml`, dossier `/var/www/Bluni`, Caddy en reverse proxy vers `127.0.0.1:3000`, alias `dc='docker compose -f compose.prod.yaml'`. Le build prérend des pages qui lisent la base : la base doit être up et migrée avant (`network: host`, d'où `bake`).
+
+Mise à jour :
+
+```bash
+cd /var/www/Bluni && git pull
+dc --profile tools run --rm --build tools pnpm db:migrate
+docker buildx bake -f compose.prod.yaml --allow=network.host app
+dc up -d --no-build app
+```
+
+Optionnel, remise à zéro de la base (efface toutes les données) :
+
+```bash
+dc --profile tools run --rm tools pnpm db:seed      # vide et recharge le jeu de test
+# ou repartir d'une base vierge :
+dc down -v && dc up -d --wait db
+dc --profile tools run --rm tools pnpm db:migrate
+dc --profile tools run --rm tools pnpm db:seed
+```
+
+Après un reseed, reconstruire `app` (pages prérendues figées au build).
+
 ## Figma
 
 Fichier `1pQjyqlVxvDVXtDnBXNgxa` (« Web »). Pages : Bluni (écrans), Composants, Assets, Chartes graphiques, Archives.
