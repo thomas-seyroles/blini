@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight, Headphones, Star } from "lucide-react";
 import { eur, placesLabel, type Journey } from "@/lib/journeys";
 import InfoDialog from "../InfoDialog/InfoDialog";
+import Route from "../Route/Route";
 import styles from "./ResultCard.module.css";
 
 const dir = "/images/decors";
@@ -45,7 +46,7 @@ export default function ResultCard({ journey, href, onChoose }: ResultCardProps)
                 </div>
             </div>
             <div className={styles.places}>
-                <Image src={`${dir}/trace-resultat.svg`} alt="" width={10} height={41} />
+                <Route vertical className={styles.trace} />
                 <div className={styles.stops}>
                     <p>{journey.from}</p>
                     <p>{journey.to}</p>

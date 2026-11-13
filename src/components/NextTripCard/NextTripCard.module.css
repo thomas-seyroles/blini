@@ -27,8 +27,11 @@
 }
 
 .city {
+    min-width: 0;
     font-size: 22px;
     font-weight: 900;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .driver {

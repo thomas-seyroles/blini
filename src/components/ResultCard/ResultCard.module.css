@@ -73,13 +73,18 @@
 
 .places {
     display: flex;
-    align-items: center;
     gap: 10px;
+}
+
+.trace {
+    padding-block: 4px;
 }
 
 .stops {
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    overflow-wrap: break-word;
     gap: 10px;
     font-size: 14px;
     font-weight: 700;

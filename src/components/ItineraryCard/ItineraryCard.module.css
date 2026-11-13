@@ -34,9 +34,15 @@
   font-weight: 900;
 }
 
+.trace {
+  padding-block: 6px;
+}
+
 .places {
   display: flex;
   flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
   flex-direction: column;
   gap: 26px;
 }

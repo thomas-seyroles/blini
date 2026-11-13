@@ -18,6 +18,8 @@ export default function Credits({ storyId }: { storyId: string }) {
         if (!dialog) return;
         if (open && !dialog.open) dialog.showModal();
         if (!open && dialog.open) dialog.close();
+        // La page quittée reste montée (cachée) : une modale ouverte rendrait la page suivante inerte
+        return () => dialog.close();
     }, [open]);
 
     if (!story) return null;

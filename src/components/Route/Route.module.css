@@ -1,0 +1,54 @@
+.root {
+    --trace: var(--jaune);
+    display: flex;
+    flex: 1 1 32px;
+    align-items: center;
+    gap: 3px;
+    min-width: 32px;
+    color: var(--trace);
+}
+
+.violet {
+    --trace: var(--violet);
+}
+
+.start,
+.end {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.start {
+    border: 2px solid currentColor;
+    background: var(--fond);
+}
+
+.end {
+    background: currentColor;
+}
+
+.line {
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(to right, currentColor 0 6px, transparent 6px 11px);
+}
+
+/* Vertical : départ en haut, arrivée en bas, pointillés jaunes */
+
+.vertical {
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-self: stretch;
+    gap: 4px;
+    min-width: 0;
+    width: 12px;
+}
+
+.vertical .line {
+    width: 3px;
+    height: auto;
+    min-height: 6px;
+    background: radial-gradient(circle, var(--jaune) 1.5px, transparent 1.6px) center top / 3px 7px repeat-y;
+}

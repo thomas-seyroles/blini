@@ -99,7 +99,7 @@ La tab bar a une version « Archives » en couleur : ne pas l'utiliser.
 
 ## Composants existants
 
-`Button` (primary, secondary, accent, deactivated, prop `submit`), `OAuthButtons`, `ConditionsForm`, `Stars`, `AboardList`, `SectionTitle`, `TabBar` (prop `active`), `CartButton`, `SearchForm` > `SearchField` + `CriteriaTile`, `NextTripCard`, `SectionTabs` (Écouter, Bibliothèque, Boutique), `HistoiresListen` (lecteur + À suivre), `HistoiresLibrary` (playlists par trajet + bibliothèque), `PlaylistEditor`, `Badges`, `Credits`, `RegionCarousel` > `RegionTile`, `TripRow`, `PackageCta` (carte Compte, bannières Cadeaux et Raconter), `PackageFlow` (stepper `/compte/package`).
+`Button` (primary, secondary, accent, deactivated, prop `submit`), `OAuthButtons`, `ConditionsForm`, `Stars`, `AboardList`, `SectionTitle`, `TabBar` (prop `active`), `CartButton`, `SearchForm` > `SearchField` + `CriteriaTile`, `NextTripCard`, `SectionTabs` (Écouter, Bibliothèque, Boutique), `HistoiresListen` (lecteur + À suivre), `HistoiresLibrary` (playlists par trajet + bibliothèque), `PlaylistEditor`, `Badges`, `Credits`, `RegionCarousel` > `RegionTile`, `TripRow`, `Route` (tracé départ-arrivée en CSS, horizontal ou `vertical`), `PackageCta` (carte Compte, bannières Cadeaux et Raconter), `PackageFlow` (stepper `/compte/package`).
 
 ## Points en suspens
 

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Route from "../Route/Route";
 import styles from "./ItineraryCard.module.css";
 
 type ItineraryCardProps = {
@@ -23,7 +23,7 @@ export default function ItineraryCard({ day, departTime, arrivalTime, from, to, 
                     <p>{departTime}</p>
                     <p>{arrivalTime}</p>
                 </div>
-                <Image src="/images/decors/trace-reservation.svg" alt="" width={12} height={76} />
+                <Route vertical tone="violet" className={styles.trace} />
                 <div className={styles.places}>
                     <div>
                         <p className={styles.place}>{from}</p>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Headphones } from "lucide-react";
 import type { Role, Trip } from "@/lib/trip";
 import Button from "../Button/Button";
+import Route from "../Route/Route";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import styles from "./NextTripCard.module.css";
 
@@ -42,7 +43,7 @@ export default function NextTripCard({ role, trip }: NextTripCardProps) {
                 <p className={styles.date}>{trip.date}</p>
                 <div className={styles.route}>
                     <span className={styles.city}>{trip.from}</span>
-                    <Image src={isDriver ? "/images/decors/route-violet.svg" : "/images/decors/route.svg"} alt="" width={110} height={14} />
+                    <Route tone={isDriver ? "violet" : "yellow"} />
                     <span className={styles.city}>{trip.to}</span>
                 </div>
                 {isDriver ? (
